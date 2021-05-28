@@ -1,0 +1,62 @@
+assert(ss.GetSum() == 15.985301f);
+이게 올바른 건가요??
+ss.Push(3.4999f);
+ss.Push(1.2f);
+ss.Push(4.6555f);
+ss.Push(3.3299f);
+ss.Push(10.2f);
+ss.Push(1.1f);
+ss.Push(-5.9f);
+ss.Push(1.1f);
+ss.Push(-12.4f);
+ss.Push(9.2f);
+push 된 값들은 다 더하면 15.9853 인데 이게 왜 15.985301로 비교 되어야 하나요?
+아래의
+assert(ss.GetSum() == 19.1853008f);
+이 테스트 코드도 똑같이 올바른지 알고 싶습니다.
+아니라면 타입 T에 대한 비교 연산자 오버로딩을 통해 오차가 epsilon 이하 일 때는 허용을 하게 해주는 걸 의도한 것인가요? (edited) 
+
+[조교]TaPion  25 days ago
+부동 소수점 오차에 대해 알고계신가요?
+
+Jihun Jeon  25 days ago
+@[조교]TaPion 그렇습니다. (edited) 
+
+[조교]TaPion  25 days ago
+그냥 순진하게 데이터들을 바로바로 더하면 저 값이 나오게 되고 그래서 15.985301이랑 비교하는 것입니다.
+
+Jihun Jeon  25 days ago
+@[조교]TaPion디버그 할때 해당 값이 안나왔었는데 다시 한번 확인해보겠습니다.
+
+Jihun Jeon  25 days ago
+@[조교]TaPion 15.985301 이 아닌 15.9853001이 나오는데 확인 해주실 수 있을 까요? 아래의 값도 19.1852989가 나옵니다. (edited) 
+
+[조교]TaPion  25 days ago
+float으로 해서 push 될때마다 바로바로 더해주시고 있는게 맞나요?
+
+Jihun Jeon  25 days ago
+@[조교]TaPion push가 될 때마다 sum이 갱신 되도록 만들지는 않았습니다. 그러나 main 함수에서
+float sum = 0.0f;
+for (int i = 0; i < 8; i++)
+{
+    sum += ss.Pop();
+}
+이와 같은 코드로 테스트 할 때도 같은 결과가 나옵니다.
+
+[조교]TaPion  25 days ago
+안쪽에서 정확하게 float으로 처리가 되고 있는게 맞나요? double로 계산하고 float으로 캐스팅하니 말씀하신 값이 나오네요 (edited) 
+
+Jihun Jeon  25 days ago
+@[조교]TaPion GetSum 의 반환형식도 T (float) 이고 내부적으로 선언한 로컬 변수 sum 도 T (float) 형식 이라서 문제는 없다고 생각합니다. GetSum 내부에서는 현재 double은 아예 사용하지 않고 있는데도 이런 값이 나오네요;
+
+[조교]TaPion  25 days ago
+코드를 한번 봐야될것같습니다
+
+[조교]TaPion  25 days ago
+연산순서가 바뀌어서 그렇습니다.
+견본예시의 경우는 들어오자 마자 계산을 하는것으로 판정을 하고 있기 때문에 해당 값이 나온 반면 작성하신 코드는 스택에서 꺼내면서 즉 들어온 순서의 역순으로 계산하고 있어 작은 오차가 생긴것입니다.
+틀린방법은 아니지만 채점프로그램이 이렇게 돌고 있으니 Sum변수를 하나 만드시고 거기에 바로바로 적용하시는 쪽으로 하시는게 좋을것 같습니다.
+(이 방법이 시간복잡도 면에서도 훨씬 낫기도 하구요.) (edited) 
+
+Jihun Jeon  25 days ago
+@[조교]TaPion 알겠습니다!

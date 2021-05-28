@@ -1,0 +1,176 @@
+COMP3200 - 실습 6
+본 실습은 컴퓨터에서 해야 하는 실습입니다. 코드 작성이 끝났다면 깃 저장소에 커밋 및 푸쉬를 하고 슬랙을 통해 자동으로 채점을 받으세요.
+
+배열은 자료형이 같은 여러 요소들을 저장하기에 매우 좋습니다. 저장할 수 있는 자료형도 기본형, 개체, 구조체, 포인터 기타 등등으로 다양하죠. 그러나 배열에는 한 가지 문제점이 있습니다. 바로 길이가 고정적이어서 정적으로 메모리가 할당된다는 점입니다. 프로그래밍을 하다보면 동적으로 배열의 길이를 늘여야 하는 상황이 자주 발생합니다. 특히 프로그램으로 유입되는 데이터의 양을 프로그래머가 완전히 예측할 수 없을 때 그러합니다. 물론 배열을 사용하면서 길이를 증감시킬 때마다 메모리를 재할당할 수도 있죠(지금까지 실습이나 과제에서 그래왔으니까요). 그렇지만 이렇게 하는 건 반복적이고 지루한 일이며 무엇보다도 실수하기 쉽습니다. 프로그래밍 언어가 이런 일을 대신 해 줬으면 좋겠죠? 자, 그럼 이제 std::vector를 쓸 차례입니다.
+
+본 실습의 목표는 std::vector에 여러 가지 연산을 수행하는 C++ 유틸리티 함수들을 작성하는 것입니다.
+
+1. 프로젝트 준비하기
+비주얼 스튜디오에서 Lab6.sln을 엽니다.
+프로젝트에 Lab6.h 파일을 추가합니다. (방법을 모른다면 실습 1 참고)
+추가한 헤더 파일에 아래 내용을 추가합니다.
+#pragma once
+
+#include <vector>
+
+namespace lab6
+{
+	int Sum(const std::vector<int>& v);
+	int Min(const std::vector<int>& v);
+	int Max(const std::vector<int>& v);
+	float Average(const std::vector<int>& v);
+	int NumberWithMaxOccurrence(const std::vector<int>& v);
+	void SortDescending(std::vector<int>& v);
+}
+프로젝트에 Lab6.cpp 파일을 추가합니다.
+추가한 cpp 파일에 아래 미구현된 코드를 추가합니다.
+#include "Lab6.h"
+
+namespace lab6
+{
+	int Sum(const std::vector<int>& v)
+	{
+		return 0;
+	}
+
+	int Min(const std::vector<int>& v)
+	{
+		return 0;
+	}
+
+	int Max(const std::vector<int>& v)
+	{
+		return 0;
+	}
+
+	float Average(const std::vector<int>& v)
+	{
+		return 0.0f;
+	}
+	
+	int NumberWithMaxOccurrence(const std::vector<int>& v)
+	{
+		return 0;
+	}
+
+	void SortDescending(std::vector<int>& v)
+	{
+
+	}
+}
+
+2. 구현하기
+보편적 규칙
+#include <algorithm>을 사용하지 마세요. 쓰면 0점 뜨니까 헛수고 하지 마세요 :)
+#include <numeric>을 사용하지 마세요. 쓰면 0점 뜨니까 헛수고 하지 마세요 :)
+2.1. lab6::Sum() 함수 구현하기
+Sum() 함수는 벡터의 모든 정수 요소들을 더한 값을 반환해야 합니다. 만일 벡터가 비어 있다면 0을 반환합니다.
+예시>
+std::vector<int> v;
+v.push_back(4);
+v.push_back(3);
+v.push_back(4);
+v.push_back(12);
+v.push_back(7);
+v.push_back(11);
+
+lab6::Sum(v); // 41
+
+2.2. lab6::Max() 함수 구현하기
+Max() 함수는 벡터의 정수 요소들 중 가장 큰 값을 반환해야 합니다. 예를 들어, 벡터의 요소가 { 1, 3, 2, 4, 5 }인 경우 최댓값인 5를 반환해야 합니다. 만약에 벡터가 비어 있다면 32비트 정수형이 표현할 수 있는 가장 작은 값을 반환합니다.
+예시>
+std::vector<int> v;
+v.push_back(4);
+v.push_back(3);
+v.push_back(4);
+v.push_back(12);
+v.push_back(7);
+v.push_back(11);
+
+lab6::Max(v); // 12
+
+2.3. lab6::Min() 함수 구현하기
+Min() 함수는 벡터의 정수 요소들 중 가장 작은 값을 반환해야 합니다. 예를 들어, 벡터의 요소가 { 3, 2, 1, 6, 8 }인 경우 최솟값인 1을 반환해야 합니다. 만약에 벡터가 비어 있다면 32비트 정수형이 표현할 수 있는 가장 큰 값을 반환합니다.
+예시>
+std::vector<int> v;
+v.push_back(4);
+v.push_back(3);
+v.push_back(4);
+v.push_back(12);
+v.push_back(7);
+v.push_back(11);
+
+lab6::Min(v); // 3
+
+2.4. lab6::Average() 함수 구현하기
+Average() 함수는 벡터의 정수 요소들의 평균값을 반환해야 합니다. 예를 들어, 벡터의 요소가 { 1, 2, 3, 5 }인 경우 평균으로 2.75f를 반환해야 합니다.
+예시>
+std::vector<int> v;
+v.push_back(4);
+v.push_back(3);
+v.push_back(4);
+v.push_back(12);
+v.push_back(7);
+v.push_back(11);
+
+lab6::Average(v); // 6.83333349f
+
+2.5. lab6::NumberWithMaxOccurrence() 함수 구현하기
+NumberWithMaxOccurrence() 함수는 벡터 안에 있는 정수 중 어떤 정수가 가장 자주 등장하는지 알아 냅니다. 예를 들어, 벡터의 요소가 { 1, 3, 3, 5, 7, 3, -10 } 인 경우 3을 반환해야 합니다. 만약에 가장 자주 등장하는 숫자가 둘 이상이라면, 그 숫자들 중 아무거나 반환하세요. 예를 들면, { 1, 1, 3, 3, 2, 6, -1 }인 경우 1 또는 3을 반환할 수 있습니다. 만약에 벡터가 비어 있다면 0을 반환합니다.
+예시>
+std::vector<int> v;
+v.push_back(4);
+v.push_back(3);
+v.push_back(4);
+v.push_back(12);
+v.push_back(7);
+v.push_back(11);
+
+lab6::NumberWithMaxOccurrence(v); // 4
+2.6. lab6::SortDescending() 함수 구현하기
+벡터의 요소들을 내림차순으로 정렬합니다.
+std::vector<int> v;
+v.push_back(4);
+v.push_back(3);
+v.push_back(4);
+v.push_back(12);
+v.push_back(7);
+v.push_back(11);
+
+lab6::SortDescending(v); // v의 요소: [ 12, 11, 7, 4, 4, 3 ]
+3. 본인 컴퓨터에서 테스트하는 법
+#include <cassert>
+#include "Lab6.h"
+
+int main()
+{
+	std::vector<int> v;
+	v.push_back(4);
+	v.push_back(3);
+	v.push_back(4);
+	v.push_back(12);
+	v.push_back(7);
+	v.push_back(11);
+
+	int sum = lab6::Sum(v);
+	int max = lab6::Max(v);
+	int min = lab6::Min(v);
+	float average = lab6::Average(v);
+	int numWithMaxOccurence = lab6::NumberWithMaxOccurrence(v);
+	lab6::SortDescending(v);
+
+	assert(sum == 41);
+	assert(max == 12);
+	assert(min == 3);
+	assert(average == 6.83333349f);
+	assert(numWithMaxOccurence == 4);
+
+	for (int i = 0; i < (int)v.size() - 1; ++i)
+	{
+		assert(v[i] >= v[i + 1]);
+	}
+	
+	return 0;
+}
+4. 커밋, 푸쉬 그리고 빌드 요청
+이건 어떻게 하는 지 이제 다 아시죠? :)

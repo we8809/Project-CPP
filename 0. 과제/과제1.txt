@@ -1,0 +1,322 @@
+
+제목  	공지일  	제출 마감일  
+실습 1 	9월 2일 09:00 (1주 차)	9월 9일 07:00
+실습 2	9월 9일 09:00 (2주 차)	9월 16일 07:00
+실습 3	9월 16일 09:00 (3주 차)	9월 23일 07:00
+실습 4	9월 23일 09:00 (4주 차)	9월 30일 07:00
+실습 5	9월 30일 09:00 (5주 차)	10월 7일 07:00
+실습 6	10월 7일 09:00 (6주 차)	10월 14일 07:00
+실습 7	10월 28일 09:00 (9주 차)	11월 4일 07:00
+실습 8	11월 4일 09:00 (10주 차)	11월 11일 07:00
+실습 9	11월 11일 09:00 (11주 차)	11월 18일 07:00
+실습 10	11월 18일 09:00 (12주 차)	11월 25일 07:00
+실습 11	11월 25일 09:00 (13주 차)	12월 2일 07:00
+과제 1 	9월 2일 09:00 (1주 차)	9월 23일 07:00
+과제 2	9월 23일 09:00 (4주 차)	10월 14일 07:00
+과제 3	10월 14일 09:00 (7주 차)	11월 11일 07:00
+과제 4	11월 11일 09:00 (11주 차)	12월 2일 07:00
+과제 1
+×
+COMP3200 - 과제 1
+** 과제를 시작하기 전에 꼼꼼히 읽어주세요.
+
+이 과제를 진행하려면 컴퓨터가 필요합니다. 채점을 받으려면 실습 1에서 만들었던 Git 저장소에 코드를 커밋(commit) 및 푸쉬(push)한 뒤, 슬랙에서 빌드봇에게 채점 신청을 하세요.
+
+이 과제에서는 MyString이라는 이름의 C++ 문자열 클래스를 작성할 것입니다. 이 클래스는 C 스타일 문자열(char*)을 감싼(wrap) 클래스로 C 스타일 문자열을 수정하는 다양한 유틸리티 메서드를 구현합니다.
+
+1. 프로젝트 설정한다
+우선 실습 1을 마무리 지어주세요. 이래야 컴퓨터에 Assignment1.sln 파일이 생깁니다
+
+비주얼 스튜디오에서 Assignment1.sln파일 엽니다.
+
+프로젝트에 MyString.h를 추가합니다.
+
+헤더 파일에 다음의 내용을 넣습니다.
+
+#pragma once
+namespace assignment1
+{
+	class MyString
+	{
+	public:
+		MyString(const char* s);
+		MyString(const MyString& other);
+		~MyString();
+		
+		unsigned int GetLength() const;
+		const char* GetCString() const;
+		void Append(const char* s);
+		MyString operator+(const MyString& other) const;
+		int IndexOf(const char* s);
+		int LastIndexOf(const char* s);
+		void Interleave(const char* s);
+		bool RemoveAt(unsigned int i);
+		void PadLeft(unsigned int totalLength);
+		void PadLeft(unsigned int totalLength, const char c);
+		void PadRight(unsigned int totalLength);
+		void PadRight(unsigned int totalLength, const char c);
+		void Reverse();
+		bool operator==(const MyString& rhs) const;
+		MyString& operator=(const MyString& rhs);
+		void ToLower();
+		void ToUpper();
+	};
+}
+프로젝트에 MyString.cpp 파일을 추가하고 아래의 내용을 넣습니다.
+#include "MyString.h"
+
+namespace assignment1
+{
+    MyString::MyString(const char* s)
+    {
+    }
+
+    MyString::MyString(const MyString& other)
+    {
+    }
+
+    MyString::~MyString()
+    {
+    }
+
+    unsigned int MyString::GetLength() const
+    {
+        return 0;
+    }
+
+    const char* MyString::GetCString() const
+    {
+        return 0;
+    }
+
+    void MyString::Append(const char* s)
+    {
+    }
+
+    MyString MyString::operator+(const MyString& other) const
+    {
+        return MyString("temporary");
+    }
+
+    int MyString::IndexOf(const char* s)
+    {
+        return 0;
+    }
+
+    int MyString::LastIndexOf(const char* s)
+    {
+        return 0;
+    }
+
+    void MyString::Interleave(const char* s)
+    {
+    }
+
+    bool MyString::RemoveAt(unsigned int index)
+    {
+        return false;
+    }
+
+    void MyString::PadLeft(unsigned int totalLength)
+    {
+    }
+
+    void MyString::PadLeft(unsigned int totalLength, const char c)
+    {
+    }
+
+    void MyString::PadRight(unsigned int totalLength)
+    {
+    }
+
+    void MyString::PadRight(unsigned int totalLength, const char c)
+    {
+    }
+
+    void MyString::Reverse()
+    {
+    }
+
+    bool MyString::operator==(const MyString& rhs) const
+    {
+        return false;
+    }
+
+    MyString& MyString::operator=(const MyString& rhs)
+    {
+        return *this;
+    }
+
+    void MyString::ToLower()
+    {
+    }
+
+    void MyString::ToUpper()
+    {
+    }
+}
+
+솔루션 빌드가 잘되는지 확인하세요.
+
+2. MyString 클래스 구현한다
+일반적인 규칙
+반드시 모든 public 메서드를 구현해야 합니다.
+
+헤더 파일에 이미 존재하는 public 메서드들의 메서드 시그니처를 절대 바꾸지 마세요.
+
+이 외에 다른 public/private 메서드와 변수는 추가해도 됩니다. 헤더 파일에 원래 있던 것들만 삭제하거나 수정하지 마세요.
+
+언어에서 제공하는 모든 라이브러리 사용을** 금지합니다**.
+
+cstring 및 cstring을 사용하는 라이브러리
+
+string, STL 컨테이너들 (vector, map, unordered_map, set, queue, stack 등)
+
+기본적으로 이 클래스 작성하기 위해 필요한 지식은 C 스타일 문자열, while/for 반복문, if 문, 그리고 1~3주차 수업에서 배운 내용에 대한 기본적인 이해뿐입니다. 이 외의 것을 사용하려 한다면 뭔가 잘못 생각하시는 겁니다.
+
+요구사항
+MyString 생성자는 C스타일 문자열을 유일한 인자로 받습니다.
+
+MyString 클래스에는 복사 생성자가 있습니다. 얕은 복사와 깊은 복사의 차이점을 잘 이해하도록 하세요.
+
+복사 생성자가 있다면 당연히 대입 연산자(=)도 있어야겠죠?
+
+소멸자는 반드시 제대로 메모리를 해제해야 합니다! 그렇지 않으면 메모리 누수가 나겠죠?
+
+<설명>
+1) GetLength 메서드는 문자열의 길이를 반환합니다.
+
+예>
+MyString s("Hello");
+int length = s.GetLength(); // 길이는 5
+
+2) GetCString 메서드는 개체 내부에 저장된 C 스타일 문자열을 반환합니다.
+
+3) Append 메서드는 현재 문자열에 매개변수로 들어온 C 스타일 문자열을 덧붙입니다.
+
+예>
+MyString s("Hello");
+s.Append(" World"); // s는 "Hello World"가 됨
+
+4) operator+ 메서드는 현재 문자열과 매개변수로 들어온 C 스타일 문자열을 합친 뒤 새로운 문자열 개체를 반환합니다.
+
+예>
+MyString s1("Hello");
+MyString s2(" World");
+
+MyString s3 = s1 + s2; // s3는 "Hello World"가 되며, s1와 s2는 여전히 "Hello"와 " World"임
+
+5) IndexOf 메서드는 현재 문자열 안에서 매개변수로 들어온 C 스타일 문자열을 찾아 그 위치를 반환합니다. 현재 문자열 안에 찾는 문자열이 여럿 있다면 첫 번째 위치만 반환합니다. 문자열을 찾지 못한 경우에는 -1을 반환합니다.
+
+예>
+MyString s1("Hello");
+int i = s1.IndexOf("ell"); // i는 1
+int j = s1.IndexOf("l"); // j는 2
+int z = s1.IndexOf("This"); // z는 -1
+
+6) LastIndexOf 메서드는 현재 문자열에서 매개 변수로 들어온 C 스타일 문자열을 찾아 그 위치를 반환합니다. 현재 문자열 안에 찾는 문자열이 여럿 있다면 마지막 위치만 반환합니다. 찾지 못한 경우에는 -1을 반환합니다.
+예>
+
+MyString s1("Hello");
+int i = s1.LastIndexOf("ell"); // i는 1
+int j = s1.LastIndexOf("l"); // j는 3
+int z = s1.LastIndexOf("This"); // z는 -1
+
+7) Interleave 메서드는 두 문자열을 한 글자씩 번갈아 가며 결합합니다. MyString 개체의 첫 번째 글자부터 시작합니다.
+예>
+
+MyString s1("Hello");
+s1.Interleave(" World"); // s1은 "H eWlolrold"
+
+8) RemoveAt 메서드는 현재 문자열에서 글자를 하나 제거합니다. 매개변수로 들어온 색인 i가 지울 글자의 위치입니다. 이 메서드는 글자를 제거하면 true를, 그러지 못했으면 false를 반환합니다.
+예>
+
+MyString s("Hello");
+bool b1 = s.RemoveAt(0); // s는 "ello", b1은 true
+bool b2 = s.RemoveAt(2); // s는 "elo", b2은 true
+bool b3 = s.RemoveAt(4); // s는 "elo", b3은 false
+
+9) PadLeft 메서드는 문자열의 길이가 totalLength와 같아지도록 문자열의 왼쪽에 글자를 반복해서 덧붙입니다. 덧붙일 글자는 스페이스 문자 또는 매개변수로 전달된 문자입니다. PadLeft 메서드가 2개 있는 게 보이시죠?
+예>
+
+MyString s1("Hello");
+
+s1.PadLeft(2); // s1: "Hello"
+s1.PadLeft(8); // s1: "   Hello"
+
+MyString s2("World");
+s2.PadLeft(3, '-'); // s2: "World"
+s2.PadLeft(7, '-'); // s2: "--World"
+
+10) PadRight 메서드는 문자열의 길이가 totalLength와 같아지도록 문자열의 오른쪽에 스페이스 또는 매개변수로 전달된 문자를 덧붙입니다. PadRight 메서드도 2개 입니다.
+예>
+
+MyString s1("Hello");
+
+s1.PadRight(2); // s1: "Hello"
+s1.PadRight(8); // s1: "Hello   "
+
+MyString s2("World");
+s2.PadRight(3, '-'); // s2: "World"
+s2.PadRight(7, '-'); // s2: "World--"
+
+11) Reverse 메서드는 추가적인 메모리를 할당하지 않은 채 문자열을 좌우로 뒤집습니다.
+예>
+
+MyString s("Hello");
+s.Reverse(); // s: "olleH"
+
+12) operator== 메서드는 두 MyString 개체 안에 저장된 문자열이 같은지 검사합니다.
+예>
+
+MyString s1("Hello");
+MyString s2("Hello");
+MyString s3("World");
+
+bool b1 = (s1 == s2); // b1: true
+bool b2 = (s2 == s3); // b2: false
+
+12) ToLower 메서드는 문자열 안에 있는 모든 대문자를 소문자로 바꿉니다. 이 메서드 또한 추가 메모리를 사용하지 않습니다. 채점에는 ASCII 문자만 사용합니다.
+예>
+
+MyString s1("HEllo 123K");
+s1.ToLower(); // s1: "hello 123k"
+ToUpper 메서드는 문자열 안에 있는 모든 소문자를 대문자로 바꿉니다. 이 메서드 또한 추가 메모리를 사용하지 않습니다. 채점에는 ASCII 문자만 사용합니다.
+예>
+
+MyString s1("HEllo 123K");
+
+s1.ToUpper(); // s1: "HELLO 123K"
+
+3. 테스트를 한다
+슬랙에서 빌드봇에게 채점을 부탁하기 전에 main.cpp 파일의 main() 함수 안에 테스트 코드를 작성하여 디버깅 해보세요. main.cpp 안에 있는 코드는 채점에 반영되지 않으니 이런 저런 테스트 코드들을 실행해보기에 딱이죠.
+
+아래에 어떤 식으로 테스트하는지 예를 들어 드릴게요:
+
+#include "MyString.h"
+
+using namespace assignment1;
+
+int main()
+{
+	MyString s("hello");
+	MyString s2("helloello");
+
+	s.Append("ello");
+	bool b = (s == s2);
+
+	// 여기에 중단점을 설정해서 b 값을 살펴보거나
+	// 아래와 같이 assert() 함수를 써보세요
+	// assert(s == s2);	// #include <cassert>이 필요
+}
+4. 커밋, 푸쉬, 채점 요청
+이건 어떻게 하는지 다 아시죠. ^_^?
+
+하지만 다음 사항에 유념에 해주세요.
+
+과제의 빌드 쿨다운 시간은 5분이 아니라 30분입니다
+
+제출마감 시간이 지난 뒤에 제출한 과제는 채점되지 않습니다. 일찍 일찍 과제를 제출하는 습관을 들입시다.
+
+<테스트>
+https://docs.google.com/document/d/14ZKEdsZo6VoNLAmCicUNJgMtkUTBcwiskjRufhGOWNk/edit

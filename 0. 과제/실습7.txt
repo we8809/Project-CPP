@@ -1,0 +1,278 @@
+COMP3200 - 실습 7
+본 실습은 컴퓨터에서 해야 하는 실습입니다. 코드 작성이 끝났다면 깃 저장소에 커밋 및 푸쉬를 하고 슬랙을 통해 자동으로 채점을 받으세요.
+
+앞으로 코드를 많이 작성하다 보면 데이터를 저장하는 다양한 방법 중에서 하나를 택해야 할 일이 있을 것입니다. 보통은 용도에 딱 맞는 자료 구조가 못해도 한두 개 존재하지만, 그렇지 않은 경우도 있죠. 이럴 때는 결국 둘 이상의 자료 구조(예: 배열과 키/값 쌍)를 함께 사용해야 할 수도 있습니다. 이때, 유틸리티 함수 몇 개를 작성해 두면 참 편할 것 같네요. 서로 다른 자료 구조 간에 변환을 해 주거나, 여러 자료 구조를 하나로 합치거나, 한 자료구조를 여러 개로 분리하는 등의 기능을 가진 함수들이요.
+
+자, 그러면 std::vector와 std::map의 C++ 유틸리티 함수들을 구현해 볼까요? 이 두 자료 구조가 템플릿을 이용하니 본 실습에서 작성하는 함수들도 템플릿을 사용해서 작성하겠습니다.
+
+1. 프로젝트 준비하기
+비주얼 스튜디오에서 Lab7.sln을 엽니다.
+프로젝트에 Lab7.h 파일을 추가합니다. (방법을 모른다면 실습 1 참고)
+추가한 헤더 파일에 아래 내용을 추가합니다.
+#pragma once
+
+#include <iostream>
+#include <vector>
+#include <map>
+
+namespace lab7
+{
+	template <typename K, class V>
+	std::map<K, V> ConvertVectorsToMap(const std::vector<K>& keys, const std::vector<V>& values)
+	{
+		std::map<K, V> m;
+		return m;
+	}
+
+	template <typename K, class V>
+	std::vector<K> GetKeys(const std::map<K, V>& m)
+	{
+		std::vector<K> v;
+		return v;
+	}
+
+	template <typename K, class V>
+	std::vector<V> GetValues(const std::map<K, V>& m)
+	{
+		std::vector<V> v;
+		return v;
+	}
+
+	template <typename T>
+	std::vector<T> Reverse(const std::vector<T>& v)
+	{
+		std::vector<T> rv;
+		return rv;
+	}
+
+	template <typename T>
+	std::vector<T> operator+(const std::vector<T>& v1, const std::vector<T>& v2)
+	{
+		std::vector<T> combined;
+		return combined;
+	}
+
+	template <typename K, class V>
+	std::map<K, V> operator+(const std::map<K, V>& m1, const std::map<K, V>& m2)
+	{
+		std::map<K, V> combined;
+		return combined;
+	}
+
+	template<typename T>
+	std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
+	{
+		return os;
+	}
+
+	template <typename K, class V>
+	std::ostream& operator<<(std::ostream& os, const std::map<K, V>& m)
+	{
+		return os;
+	}
+}
+
+2. 구현하기
+2.1. ConvertVectorsToMap() 함수 구현하기
+ConvertVectorsToMap() 함수는 const std::vector<K>& keys와 const std::vector<V>& values를 인자로 받고, 둘을 합친 std::map<K, V>를 반환합니다. 여기서 K와 V는 자료형으로, 본 실습에서는 템플릿 매개 변수 K에 기본 자료형 (primitive type)만 사용합니다.
+Keys = [ 'a', 'b', 'c' ]
+Values = [ 1, 2, 3 ]
+
+Output = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }
+키가 중복될 경우에는 첫 번째 것만 허용합니다.
+Keys = [ 'a', 'b', 'c', 'a' ]
+Values = [ 1, 2, 3, 4 ]
+
+Output = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }
+keys 벡터와 values 벡터의 길이가 서로 다르면 맵의 길이는 Min(keys의 길이, values의 길이)가 되어야 합니다.
+// 예시
+Keys = [ 'a', 'b', 'c', 'd' ]
+Values = [ 1, 2, 3 ]
+Output = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }
+
+// 또 다른 예시
+Keys = [ 'a', 'b', 'c' ]
+Values = [ 1, 2, 3, 4 ]
+
+Output = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }
+
+2.2. GetKeys() 함수 구현하기
+GetKeys() 함수는 인자로 받은 std::map<K, V>의 모든 키 목록을 반환합니다.
+Map = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }
+Output = [ 'a', 'b', 'c' ]
+2.3. GetValues() 함수 구현하기
+GetValues() 함수는 인자로 받은 std::map<K, V>의 모든 값 목록을 반환합니다.
+Map = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }
+Output = [ 1, 2, 3 ]
+2.4. Reverse() 함수 구현하기
+Reverse() 함수는 원본 벡터의 요소들이 역순으로 나열된 새 벡터를 반환합니다. (원본 벡터를 변경하지 마세요.)
+Vector = [ 1, 2, 3, 4 ]
+Output = [ 4, 3, 2, 1 ] // Vector는 여전히 [ 1, 2, 3, 4 ]
+2.5. 두 std::vector에 적용되는 operator+() 구현하기
++ 연산자는 두 벡터를 합칩니다.
+Vector1 = [ 1, 2, 3 ]
+Vector2 = [ 4, 5, 6 ]
+
+Output = [ 1, 2, 3, 4, 5, 6 ]
+합쳐진 벡터에 중복되는 값이 있으면 안 됩니다.
+Vector1 = [ 1, 2, 3 ]
+Vector2 = [ 3, 2, 4 ]
+
+Output = [ 1, 2, 3, 4 ]
+이 연산은 원본 벡터들을 변경하지 않아야 합니다.
+2.6. 두 std::map에 적용되는 operator+() 구현하기
++ 연산자는 두 맵을 합칩니다.
+Map1 = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }
+Map2 = { 'd', 4  }, { 'e', 5 }, { 'f', 6 }
+
+Output = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }, { 'd', 4  }, { 'e', 5 }, { 'f', 6 }
+키가 중복되면 첫 번째 맵(첫 번째 인자)의 키-값 쌍만 허용합니다.
+Map1 = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }
+Map2 = { 'a', 4  }, { 'b', 5 }, { 'f', 6 }
+
+Output = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }, { 'f', 6 }
+이 연산은 원본 맵들을 변경하지 않아야 합니다.
+
+2.7. std::vector에 적용되는 operator<<() 구현하기
+<< 연산자는 std::vector를 다음과 같은 형식으로 출력합니다.
+Vector = [ 1, 2, 3, 4 ]
+		
+std::cout << Vector
+
+정확히 다음과 같이 출력해야 합니다(끝에 줄바꿈 없음): 
+1, 2, 3, 4
+
+2.8. std::map에 적용되는 operator<<() 구현하기
+<< 연산자는 std::map을 다음과 같은 형식으로 출력합니다.
+Map = { 'a', 1  }, { 'b', 2 }, { 'c', 3 }, { 'd', 4 }
+		
+std::cout << Map
+
+정확히 다음과 같이 출력해야 합니다: 
+{ a, 1 }⤶
+{ b, 2 }⤶
+{ c, 3 }⤶
+{ d, 4 }⤶
+ 
+3. 본인 컴퓨터에서 테스트하는 법
+프로젝트에 main.cpp를 추가하고, 그 안에 테스트 코드를 작성하세요. 아래는 테스트 코드의 한 예입니다.
+#include <cassert>
+
+#include "Lab7.h"
+
+using namespace lab7;
+
+int main()
+{
+	std::vector<int> v1;
+	v1.push_back(1);
+	v1.push_back(2);
+	v1.push_back(3);
+
+	std::vector<char> v2;
+	v2.push_back('a');
+	v2.push_back('b');
+	v2.push_back('c');
+
+	std::vector<int> v3;
+	v3.push_back(4);
+	v3.push_back(5);
+	v3.push_back(6);
+
+	std::map<char, int> m1;
+	m1['a'] = 1;
+	m1['b'] = 2;
+	m1['c'] = 3;
+
+	std::map<char, int> m2;
+	m2['d'] = 4;
+	m2['e'] = 5;
+	m2['f'] = 6;
+
+	std::map<int, char> m = lab7::ConvertVectorsToMap(v1, v2);
+	{
+		std::map<int, char>::const_iterator it = m.begin();
+
+		assert(it->first == 1);
+		assert(it->second == 'a');
+		it++;
+		assert(it->first == 2);
+		assert(it->second == 'b');
+		it++;
+		assert(it->first == 3);
+		assert(it->second == 'c');
+	}
+	
+	std::vector<char> keys = lab7::GetKeys(m1);
+	{
+		std::vector<char>::const_iterator it = keys.begin();
+
+		assert(*it == 'a');
+		it++;
+		assert(*it == 'b');
+		it++;
+		assert(*it == 'c');
+	}
+
+	std::vector<int> values = lab7::GetValues(m1);
+	{
+		std::vector<int>::const_iterator it = values.begin();
+
+		assert(*it == 1);
+		it++;
+		assert(*it == 2);
+		it++;
+		assert(*it == 3);
+	}
+
+	std::vector<int> reversedV1 = lab7::Reverse(v1);
+	{
+		assert(reversedV1[0] == v1[2]);
+		assert(reversedV1[1] == v1[1]);
+		assert(reversedV1[2] == v1[0]);
+	}
+
+	std::vector<int> combinedVector = v1 + v3;
+	{
+		assert(combinedVector.size() == 6);
+		assert(combinedVector[0] == 1);
+		assert(combinedVector[1] == 2);
+		assert(combinedVector[2] == 3);
+		assert(combinedVector[3] == 4);
+		assert(combinedVector[4] == 5);
+		assert(combinedVector[5] == 6);
+	}
+
+	std::map<char, int> combinedMap = m1 + m2;
+	{
+		std::map<char, int>::const_iterator it = combinedMap.begin();
+
+		assert(combinedMap.size() == 6);
+
+		assert(it->first == 'a');
+		assert(it->second == 1);
+		it++;
+		assert(it->first == 'b');
+		assert(it->second == 2);
+		it++;
+		assert(it->first == 'c');
+		assert(it->second == 3);
+		it++;
+		assert(it->first == 'd');
+		assert(it->second == 4);
+		it++;
+		assert(it->first == 'e');
+		assert(it->second == 5);
+		it++;
+		assert(it->first == 'f');
+		assert(it->second == 6);
+	}
+
+	std::cout << v1 << std::endl;
+	std::cout << m1 << std::endl;
+
+	return 0;
+}
+결과를 보기 위해 컴파일하고 실행합니다.
+4. 커밋, 푸쉬 그리고 빌드 요청
+이건 어떻게 하는 지 이제 다 아시죠? :)

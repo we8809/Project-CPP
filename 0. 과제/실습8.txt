@@ -1,0 +1,225 @@
+COMP3200 - 실습 8
+본 실습은 컴퓨터에서 해야 하는 실습입니다. 코드 작성이 끝났다면 깃 저장소에 커밋 및 푸쉬를 하고 슬랙을 통해 자동으로 채점을 받으세요.
+
+저희는 얼마 전 수업에서 std::vector나 std::map 같은 STL 컨테이너들이 얼마나 유용하게 쓰이는지 살펴봤습니다. STL 컨테이너들은 제네릭형으로 되어 있어서 이 템플릿 클래스의 인스턴스를 만들 때 자료형을 결정할 수 있습니다. 예를 들어 int, float, double에 사용할 벡터 클래스를 따로 구현할 필요 없이 아래처럼 std::vector 템플릿 클래스의 인스턴스를 만들어 주면 되죠.
+
+std::vector<int> intVector;
+std::vector<float> floatVector;
+std::vector<double> doubleVector;
+이렇듯 std::vector는 매우 훌륭합니다만 한 가지 단점이 있습니다. 바로 요소를 추가할수록 메모리가 증가한다는 것이죠. 때로는 고정된 메모리를 사용하고 싶을 때도 있습니다. 그럴 때 단순 배열을 사용할 수도 있지만, 그러면 메모리나 현재 요소 개수를 나타내는 변수 등을 손수 관리해 줘야 해서 실수하기 쉽죠. 이런 문제들을 해결하기 위해 직접 FixedVector라는 클래스를 만들어 봅시다.
+
+본 실습에서 여러분이 할 일은 다양한 벡터 연산에 사용될 C++ 템플릿 클래스 FixedVector<T, size_t N>와 특수화된 클래스 FixedVector<bool, size_t N>를 작성하는 것입니다.
+
+1. 프로젝트 준비하기
+본 실습에서는 난이도를 살짝 높여 보겠습니다. 기본 파일을 한 개도 안 드릴 겁니다. 그러니 아래에 나와 있는 스펙을 보고 알아서 만들어 보세요. 와아~~~ 무진장 재밌겠죠?
+
+비주얼 스튜디오에서 Lab8.sln을 엽니다.
+프로젝트에 FixedVector.h 파일을 추가합니다.
+프로젝트에 FixedBoolVector.h 파일을 추가합니다.
+일어나서 국민 체조 한 번 하시고, 코딩할 준비하세요 :)
+
+2. FixedVector 클래스 구현하기
+
+보편적 규칙
+
+FixedVector가 기본 자료형(primitive type)만 지원한다고 생각하지 마세요. 클래스나 포인터도 넣을 수 있어야 합니다.
+std::vector, std::map, std::set 및 기타 STL 컨테이너를 사용하지 마세요. 사용하면 0점 뜨니까 헛수고하지 마시고요 :).
+
+2.1 FixedVector<T, size_t N> 클래스 구현하기
+FixedVector 클래스는 2개의 템플릿 매개 변수를 취합니다:
+벡터에 저장할 데이터의 자료형 T
+자료형이 size_t인 벡터의 용량(Capacity) N
+개체를 생성할 때, 생성자를 통해서가 아니라 템플릿 매개 변수를 통해 FixedVector의 용량이 설정되며, 이 용량은 라이프사이클(수명) 동안 변하지 않습니다.
+
+2.1.1 생성자 구현하기
+생성자에는 매개 변수가 없습니다.
+필요한 경우 복사 생성자, 소멸자, 대입 연산자를 구현해 주세요.
+예시>
+FixedVector<int, 5> v1; // 용량: 5
+FixedVector<int, 10> v2; // 용량: 10
+2.1.2 Add() 구현하기
+Add()의 매개 변수는 T 자료형인 t 하나뿐입니다.
+FixedVector의 끝에 새 요소 t를 추가합니다.
+성공적으로 추가하면 true를 반환하고, 아니면 false를 반환합니다. (예> 이미 FixedVector의 용량이 가득 찬 상태라면 Add()는 false를 반환)
+어떻게 인자를 전달하는 게 가장 합리적일까요? 개체, 기본 자료형 및 포인터를 포함한 모든 자료형을 전달할 수 있도록 하는 한편, 큰 데이터를 복사하는 일이 일어나지 않도록 해야 합니다.
+FixedVector<int, 4> v1; 
+v1.Add(1); // [ 1 ]
+v1.Add(2); // [ 1, 2 ]
+v1.Add(3); // [ 1, 2, 3 ]
+v1.Add(4); // [ 1, 2, 3, 4 ]
+
+v1.Add(5); // false 반환. [1, 2, 3, 4]
+2.1.3 Remove() 구현하기
+Remove()의 매개 변수는 T 자료형인 t 하나뿐입니다.
+FixedVector의 앞에서부터 처음 발견하는 t를 제거합니다.
+요소를 제거한 뒤에도 남은 요소들의 순서가 유지되면서 요소 사이에 빈 공간이 없도록 해야 합니다.
+제거할 요소를 발견하지 못했으면 false를 반환하고, 아니면 true를 반환합니다.
+예시>
+FixedVector<int, 4> v1; 
+v1.Add(1); // [ 1 ]
+v1.Add(2); // [ 1, 2 ]
+v1.Add(3); // [ 1, 2, 3 ]
+v1.Add(4); // [ 1, 2, 3, 4 ]
+
+v1.Remove(3); // [ 1, 2, 4 ]
+v1.Remove(3); // false 반환
+2.1.4 Get() 구현하기
+Get()의 매개 변수는 unsigned int형 index 하나뿐입니다.
+색인 위치에 있는 요소를 반환합니다.
+index의 값은 항상 범위 내(within range)에 있다고(FixedVector의 현재 크기를 넘지 않는다고) 가정합니다.
+호출자가 반환 값을 직접 수정할 수 없어야 합니다.
+FixedVector<int, 5> v1;
+v1.Add(1);
+v1.Add(2);
+v1.Add(3);
+v1.Add(4);
+v1.Get(0); // 1 반환
+2.1.5 첨자 연산자 ([]) 구현하기
+첨자 연산자 ([])는 아래 한 가지만 빼면 Get()과 똑같이 동작합니다.
+첨자 연산자의 경우에는 호출자가 반환 값을 수정할 수 있어야 하고, 반환 값을 수정하면 FixedVector 내부에 저장되어 있는 해당 값도 수정되어야 합니다.
+FixedVector<int, 5> v1;
+v1.Add(1);
+v1.Add(2);
+v1.Add(3);
+v1.Add(4);
+
+v1[0]; // 1 반환
+2.1.6 GetIndex() 구현하기
+GetIndex()의 매개 변수는 T 자료형인 t 하나뿐입니다.
+인자로 전달된 데이터와 동일한 요소가 처음 발견된 색인 위치를 int로 반환합니다.
+FixedVector에서 인자로 전달된 데이터를 찾지 못했다면 -1을 반환합니다.
+FixedVector<int, 5> v1;
+v1.Add(1);
+v1.Add(2);
+v1.Add(3);
+v1.Add(4);
+
+v1.GetIndex(2); // 1 반환
+v1.GetIndex(5); // -1 반환
+2.1.7 GetSize() 구현하기
+GetSize()에는 매개 변수가 없습니다.
+현재 FixedVector에 저장되어 있는 요소의 개수를 size_t형으로 반환합니다.
+FixedVector<int, 5> v1;
+v1.Add(1);
+v1.Add(2);
+v1.Add(3);
+v1.Add(4);
+
+v1.GetSize(); // 4 반환
+2.1.8 GetCapacity() 구현하기
+GetCapacity()에는 매개 변수가 없습니다.
+FixedVector가 저장할 수 있는 요소의 최대 개수(용량)를 size_t형으로 반환합니다.
+FixedVector<int, 5> v1;
+v1.Add(1);
+v1.Add(2);
+v1.Add(3);
+v1.Add(4);
+
+v1.GetCapacity(); // 5 반환
+2.2 특수화된 템플릿 FixedVector<bool, size_t N> 구현하기
+FixedVector<bool, size_t N>은 FixedVector<class T, size_t N> 클래스가 특수화된 형태로서, T가 bool일 때만 적용됩니다. 강의에서 템플릿 특수화가 무엇인지 그리고 언제 가끔 유용한지는 간단히 설명했죠? T가 bool일 경우, 참과 거짓(0 또는 1)을 나타내기 위해서는 기껏해야 1비트면 충분한데, 특수화를 하지 않으면 각 불리언 값을 나타내기 위해 1바이트(또는 C++ 컴파일러에 따라 4바이트)를 사용하기 때문에 공간을 낭비하게 됩니다.
+
+그러므로 각 불리언 값을 저장하는 데 단 1비트만 사용하는 FixedVector<bool, size_t N>을 구현하세요. 구현할 때 내부 데이터형으로 8비트, 32비트, 64비트 정수 등을 사용할 수 있지만 본 실습에서는 32비트 정수를 사용하기로 합니다. 그러는게 아마 최신 CPU 아키텍처에서 성능이 가장 빠를 겁니다.
+
+2.2.1 첨자 ([]) 연산자를 구현할 때….
+FixedVector<bool, size_t N>의 첨자 연산자의 경우에는 리턴값을 변경할 수 없습니다 (FixedVector<T, size_t N>의 경우와 다름에 주의).
+3. 본인 컴퓨터에서 테스트하는 법
+프로젝트에 main.cpp를 추가하고, 그 안에 테스트 코드를 작성하세요. 아래는 테스트 코드의 한 예입니다.
+#include <cassert>
+
+#include "FixedVector.h"
+#include "FixedBoolVector.h"
+
+using namespace lab8;
+
+int main()
+{
+	int i1 = 23;
+	int i2 = 25;
+	int i3 = 10;
+	int i4 = -4;
+	int i5 = 70;
+
+	FixedVector<int, 33> iv;
+
+	assert(iv.GetCapacity() == 33);
+
+	iv.Add(i1);
+	iv.Add(i2);
+	iv.Add(i3);
+	iv.Add(i4);
+
+	assert(iv.GetSize() == 4);
+	assert(iv.GetIndex(i2) == 1);
+	assert(iv.Get(1) == i2);
+	assert(iv[1] == i2);
+
+	bool bRemoved = iv.Remove(i5);
+	assert(!bRemoved);
+	assert(iv.GetSize() == 4);
+
+	bRemoved = iv.Remove(i2);
+	assert(bRemoved);
+	assert(iv.GetSize() == 3);
+	assert(iv.GetIndex(i2) == -1);
+
+	FixedVector<bool, 10> v;
+
+	assert(v.GetCapacity() == 10);
+
+	v.Add(true);
+	v.Add(true);
+	v.Add(true);
+	v.Add(true);
+	v.Add(false);
+	v.Add(false);
+	v.Add(true);
+
+	assert(v.GetSize() == 7);
+	assert(v.Get(0));
+	assert(v.Get(1));
+	assert(v.Get(2));
+	assert(v.Get(3));
+	assert(!v.Get(4));
+	assert(!v.Get(5));
+	assert(v.Get(6));
+
+	v.Remove(false);
+
+	assert(v.GetSize() == 6);
+	assert(!v.Get(4));
+	assert(v.Get(5));
+
+	v.Remove(false);
+
+	assert(v.GetSize() == 5);
+	
+	for (size_t i = 0; i < v.GetSize(); i++)
+	{
+		assert(v[i]);
+	}
+
+	v.Remove(true);
+
+	assert(v.GetSize() == 4);
+
+	for (size_t i = 0; i < v.GetSize(); i++)
+	{
+		assert(v[i]);
+	}
+
+	FixedVector<bool, 65> v1;
+
+	for (int i = 0; i < 65; i++)
+	{
+		v1.Add(false);
+	}
+
+	assert(v1.Add(true) == false);
+	assert(v1.GetSize() == 65);
+	assert(v1.GetIndex(true) == -1);
+
+	return 0;
+}
+4. 커밋, 푸쉬 그리고 빌드 요청
+이건 어떻게 하는 지 이제 다 아시죠? :)

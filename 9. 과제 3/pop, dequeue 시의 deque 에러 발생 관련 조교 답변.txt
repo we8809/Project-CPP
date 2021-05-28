@@ -1,0 +1,67 @@
+quokka Oct 22nd at 2:41 PM
+계속 시간초과로 0점이 뜨는데 어떤 이유인지 알수 있을까요?? 무한루프에 빠질만한 코드는 없어보여서요ㅠ 빌드번호는 1178입니다!
+:white_check_mark:
+1
+
+
+[조교] 현록  19 days ago
+직접 디버그 해보시길 바라는 마음에,
+테스트 케이스 드리겠습니다.
+QueueStack<int>에서 스택의 최대칸이 2칸인 큐스택을 만듭니다.
+1,2,3,4를 차례로 Enqueue 합니다.
+2번 Dequeue 합니다.
+(2번째 Dequeue에서 크래시 발생)
+코드를 수정해보시고, 감이 안잡히시면 다시 말씀해주세요.
+(예시는 QueueStack으로 했지만, 같은 방식으로 코드를 짰다면 다른 컨테이너 역시 같은 문제가 발생할 수 있습니다.) (edited) 
+:+1:
+1
+
+
+quokka  19 days ago
+다른 테스트코드는 패스해서 안일했었네요ㅠㅠ 문제점 확인했습니다! 감사합니다!
+:+1:
+2
+
+
+
+Vstory  4 days ago
+저도 무한루프가 계속 뜨네요 ㅠ 한번 봐주실 수 있나요?
+빌드 1283
+:white_check_mark:
+1
+
+
+[조교] 현록  4 days ago
+@Vstory
+이번에도 직접 디버그 해보시길 바라는 마음에,
+테스트 케이스 드리겠습니다.
+SmartStack<int>에서,
+2,2,2,2를 차례로 Push,
+4번 Pop 해봅니다.
+(2번째 Pop에서 크래시 발생)
+코드를 수정해보시고, 감이 안 잡히시면 다시 말씀해주세요.
+(예시는 SmartStack으로 했지만, 같은 방식으로 코드를 짰다면 다른 컨테이너 역시 같은 문제가 발생할 수 있습니다.)
+
+Vstory  3 days ago
+감사합니다 ! 무한루프 때문에 계속 반복문만 들여다봤네요 ㅎ. (edited) 
+:+1:
+1
+
+
+quokka  12 hours ago
+저도 테스트 케이스를 다시 받을 수 있을까요? 빌드번호 1375번입니다..ㅠ
+
+[조교] 현록  3 hours ago
+@quokka
+코드상에 복사 붙여넣기 하시다가 철자가 틀린(다른 변수명을 사용한) 부분이 있습니다.
+테스트 케이스로 요청하셔서 테스트 케이스로 답변드립니다.
+QueueStack<int> aqs(3);
+aqs.Enqueue(1);
+aqs.Enqueue(2);
+aqs.Enqueue(3);
+aqs.Enqueue(4);
+aqs.Enqueue(5);
+QueueStack<int> bqs(4);
+bqs = aqs;
+assert(aqs.Peek() == bqs.Peek());
+(edited)

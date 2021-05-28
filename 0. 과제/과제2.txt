@@ -1,0 +1,1068 @@
+COMP3200 - 과제 2
+컴퓨터에서 해야 하는 과제입니다. 코드를 전부 다 작성한 뒤에는 깃 저장소에 커밋 및 푸쉬를 하고 슬랙을 통해 자동으로 채점을 받으세요.
+
+먼 미래, 교통이 완전히 자동화되어 있는 머신 시티(Machine City)에는 데우스 엑스 마키나(Deus Ex Machina)라는 기계가 지난 10년간 모든 운송 수단을 제어해 왔습니다..
+
+Airplane(비행기)
+
+Boat(보트)
+
+Boat-plane(수상비행기)
+
+Motorcycle(오토바이)
+
+Sedan(세단형 자동차)
+
+U-boat(잠수함)
+
+수명이 다한 데우스 엑스 마키나는 공식적으로 은퇴를 눈 앞에 두고 있어서, 머신 시티 시장이 당신에게 새 엑스 마키나에 탑재할 소프트웨어를 개발해 달라고 요청해 왔습니다. 이 머신 시티의 수송 시스템을 관리하는 C++ 클래스들(꽤 많음..)을 작성하는 것이 본 과제입니다.
+
+1. 프로젝트 준비하기
+비주얼 스튜디오에서 Assignment2.sln 을 엽니다.
+
+프로젝트에 IDivable.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+namespace assignment2
+{
+	class IDivable
+	{
+	public:
+		virtual unsigned int GetDiveSpeed() const = 0;
+	};
+}
+프로젝트에 IDrivable.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+namespace assignment2
+{
+	class IDrivable
+	{
+	public:
+		virtual unsigned int GetDriveSpeed() const = 0;
+	};
+}
+프로젝트에 IFlyable.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+namespace assignment2
+{
+	class IFlyable
+	{
+	public:
+		virtual unsigned int GetFlySpeed() const = 0;
+	};
+}
+프로젝트에 ISailable.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+namespace assignment2
+{
+	class ISailable
+	{
+	public:
+		virtual unsigned int GetSailSpeed() const = 0;
+	};
+}
+프로젝트에 Person.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+#include <string>
+
+namespace assignment2
+{
+	class Person
+	{
+	public:
+		Person(const char* name, unsigned int weight);
+		~Person();
+
+		const std::string& GetName() const;
+		unsigned int GetWeight() const;
+	};
+}
+프로젝트에 Person.cpp 파일을 추가합니다.
+
+추가한 cpp 파일에 아래 미구현된 코드를 붙여넣습니다.
+
+#include "Person.h"
+
+namespace assignment2
+{
+	Person::Person(const char* name, unsigned int weight)
+	{
+	}
+
+	Person::~Person()
+	{
+	}
+
+	const std::string& Person::GetName() const
+	{
+		return 0;
+	}
+
+	unsigned int Person::GetWeight() const
+	{
+		return 0;
+	}
+}
+프로젝트에 Vehicle.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+#include "Person.h"
+
+namespace assignment2
+{
+	class Vehicle
+	{
+	public:
+		Vehicle(unsigned int maxPassengersCount);
+		~Vehicle();
+
+		virtual unsigned int GetMaxSpeed() const = 0;
+
+		bool AddPassenger(const Person* person);
+		bool RemovePassenger(unsigned int i);
+		const Person* GetPassenger(unsigned int i) const;
+		unsigned int GetPassengersCount() const;
+		unsigned int GetMaxPassengersCount() const;
+	};
+}
+프로젝트에 Vehicle.cpp 파일을 추가합니다.
+
+추가한 cpp 파일에 아래 미구현된 코드를 붙여넣습니다.
+
+#include "Vehicle.h"
+
+namespace assignment2
+{
+	Vehicle::Vehicle(unsigned int maxPassengersCount)
+	{
+	}
+
+	Vehicle::~Vehicle()
+	{
+	}
+
+	bool Vehicle::AddPassenger(const Person* person)
+	{
+		return false;
+	}
+
+	bool Vehicle::RemovePassenger(unsigned int i)
+	{
+		return false;
+	}
+
+	unsigned int Vehicle::GetPassengersCount() const
+	{
+		return 0;
+	}
+
+	unsigned int Vehicle::GetMaxPassengersCount() const
+	{
+		return 0;
+	}
+
+	const Person* Vehicle::GetPassenger(unsigned int i) const
+	{
+		return NULL;
+	}
+}
+프로젝트에 Trailer.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+namespace assignment2
+{
+	class Trailer
+	{
+	public:
+		Trailer(unsigned int weight);
+		~Trailer();
+
+		unsigned int GetWeight() const;
+	};
+}
+프로젝트에 Trailer.cpp 파일을 추가합니다.
+
+추가한 cpp 파일에 아래 미구현된 코드를 붙여넣습니다.
+
+#include "Trailer.h"
+
+namespace assignment2
+{
+	Trailer::Trailer(unsigned int weight)
+	{
+	}
+
+	Trailer::~Trailer()
+	{
+	}
+
+	unsigned int Trailer::GetWeight() const
+	{
+		return 0;
+	}
+}
+프로젝트에 Airplane.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+#include "Boatplane.h"
+
+namespace assignment2
+{
+	class Boat;
+
+	class Airplane
+	{
+	public:
+		Airplane(unsigned int maxPassengersCount);
+		~Airplane();
+
+		Boatplane operator+(Boat& boat);
+	};
+}
+프로젝트에 Airplane.cpp 파일을 추가합니다.
+
+추가한 cpp 파일에 아래 미구현된 코드를 붙여넣습니다.
+
+#include "Airplane.h"
+#include "Boat.h"
+#include "Boatplane.h"
+
+namespace assignment2
+{
+	Airplane::Airplane(unsigned int maxPassengersCount)
+	{
+	}
+
+	Airplane::~Airplane()
+	{
+	}
+
+	Boatplane Airplane::operator+(Boat& boat)
+	{
+		Boatplane bp(0);
+		return bp;
+	}
+}
+프로젝트에 Boat.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+#include "Boatplane.h"
+
+namespace assignment2
+{
+	class Airplane;
+
+	class Boat
+	{
+	public:
+		Boat(unsigned int maxPassengersCount);
+		~Boat();
+
+		Boatplane operator+(Airplane& plane);
+	};
+}
+프로젝트에 Boat.cpp 파일을 추가합니다.
+
+추가한 cpp 파일에 아래 미구현된 코드를 붙여넣습니다.
+
+#include "Boat.h"
+
+namespace assignment2
+{
+	Boat::Boat(unsigned int maxPassengersCount)
+	{
+	}
+
+	Boat::~Boat()
+	{
+	}
+
+	Boatplane Boat::operator+(Airplane& plane)
+	{
+		Boatplane bp(5);
+        	return bp;
+	}
+}
+프로젝트에 Boatplane.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+namespace assignment2
+{
+	class Boatplane
+	{
+	public:
+		Boatplane(unsigned int maxPassengersCount);
+		~Boatplane();
+	};
+}
+프로젝트에 Boatplane.cpp 파일을 추가합니다.
+
+추가한 cpp 파일에 아래 미구현된 코드를 붙여넣습니다.
+
+#include "Boatplane.h"
+
+namespace assignment2
+{
+	Boatplane::Boatplane(unsigned int maxPassengersCount)
+	{
+	}
+
+	Boatplane::~Boatplane()
+	{
+	}
+}
+프로젝트에 Motorcycle.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+namespace assignment2
+{
+	class Motorcycle
+	{
+	public:
+		Motorcycle();
+		~Motorcycle();
+
+	};
+}
+프로젝트에 Motorcycle.cpp 파일을 추가합니다.
+
+추가한 cpp 파일에 아래 미구현된 코드를 붙여넣습니다.
+
+#include "Motorcycle.h"
+
+namespace assignment2
+{
+	Motorcycle::Motorcycle()
+	{
+	}
+
+	Motorcycle::~Motorcycle()
+	{
+	}
+}
+프로젝트에 Sedan.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+namespace assignment2
+{
+	class Trailer;
+
+	class Sedan
+	{
+	public:
+		Sedan();
+		~Sedan();
+
+		bool AddTrailer(const Trailer* trailer);
+		bool RemoveTrailer();
+
+	};
+}
+프로젝트에 Sedan.cpp 파일을 추가합니다.
+
+추가한 cpp 파일에 아래 미구현된 코드를 붙여넣습니다.
+
+#include "Sedan.h"
+
+namespace assignment2
+{
+	Sedan::Sedan()
+	{
+	}
+
+	Sedan::~Sedan()
+	{
+	}
+
+	bool Sedan::AddTrailer(const Trailer* trailer)
+	{
+		return false;
+	}
+
+	bool Sedan::RemoveTrailer()
+	{
+		return false;
+	}
+}
+프로젝트에 UBoat.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+namespace assignment2
+{
+	class UBoat
+	{
+	public:
+		UBoat();
+		~UBoat();
+	};
+}
+프로젝트에 UBoat.cpp 파일을 추가합니다.
+
+추가한 cpp 파일에 아래 미구현된 코드를 붙여넣습니다.
+
+#include "UBoat.h"
+
+namespace assignment2
+{
+	UBoat::UBoat()
+	{
+	}
+
+	UBoat::~UBoat()
+	{
+	}
+}
+프로젝트에 DeusExMachina.h 파일을 추가합니다.
+
+추가한 헤더 파일에 아래 내용을 붙여넣습니다.
+
+#pragma once
+
+#include "Vehicle.h"
+
+namespace assignment2
+{
+	class DeusExMachina
+	{
+	public:
+		static DeusExMachina* GetInstance();
+		void Travel() const;
+		bool AddVehicle(Vehicle* vehicle);
+		bool RemoveVehicle(unsigned int i);
+		const Vehicle* GetFurthestTravelled() const;
+	};
+}
+프로젝트에 DeusExMachina.cpp 파일을 추가합니다.
+
+추가한 cpp 파일에 아래 미구현된 코드를 추가합니다.
+
+#include "DeusExMachina.h"
+
+namespace assignment2
+{
+	DeusExMachina* DeusExMachina::GetInstance()
+	{
+		return NULL;
+	}
+
+	void DeusExMachina::Travel() const
+	{
+	}
+
+	bool DeusExMachina::AddVehicle(Vehicle* vehicle)
+	{
+		return false;
+	}
+
+	bool DeusExMachina::RemoveVehicle(unsigned int i)
+	{
+		return false;
+	}
+
+	const Vehicle* DeusExMachina::GetFurthestTravelled() const
+	{
+		return NULL;
+	}
+}
+2. 구현에 관한 요구 사항
+보편적 규칙
+표준 템플릿 라이브러리 컨테이너((예> vector, map, set 등)의 사용을 금합니다. 또한 표준 템플릿 라이브러리 컨테이너를 쓰는 다른 헤더들도 쓰지 마세요 (iostream, iomanip, etc, 등등). 쓰면 0점 뜨니까 헛수고 하지 마세요 :)
+
+복사 생성자, 대입 연산자, 소멸자 또는 기타 public/private 메서드들을 작성해야 할 수도 있습니다.
+
+섹션 1에서 제공한 기본 파일에 있는 메서드 시그내처들을 수정하는 것을 금합니다. 그 외에는 자유롭게 메서드나 변수, 혹은 클래스를 추가해도 됩니다.
+
+부동 소수점 계산이 필요한 경우 double을 사용하시고 반올림 한 값을 반환하세요.
+
+본 과제에서 요구하는 바가 매우 모호하게 느껴진다면 그것은 의도한 바입니다. 여기에 있는 추상적인 요구 사항을 읽고 메서드들을 실제 어떻게 구현할지 판단하는 것은 여러분의 몫입니다.
+
+모든 클래스에 공통적으로 적용되는 정보
+이 과제에서 무게, 속도, 거리에 사용하는 단위는 각각 kg, km/h, km입니다.
+
+모든 운송 수단은 Vehicle 추상 클래스를 상속해야 합니다.
+
+어떤 운송 수단은 비행, 잠수, 도로 주행, 항해 중 여러 가지 방법을 이용하여 이동을 할 수도 있습니다.
+
+2.1 Person 클래스
+Person은 운송 수단의 탑승객입니다.
+
+본 과제에서 Person과 Passenger라는 용어는 동일한 의미를 가집니다.
+
+2.1.1 Person::GetName() 메서드 구현하기
+GetName() 메서드는 Person의 이름을 반환합니다.
+
+2.1.2 Person::GetWeight() 메서드 구현하기
+GetWeight() 메서드는 Person의 몸무게를 반환합니다.
+예시>
+
+Person p("Bob", 85);
+p.GetName(); // "Bob"
+p.GetWeight(); // 85
+
+2.2 Vehicle 클래스
+Vehicle은 모든 운송 수단이 상속받는 추상 클래스입니다. 이 클래스에는 승객을 태우고 내리는 기본 메서드와, 모든 파생 클래스가 구현해야 하는 순수 가상 함수가 있습니다.
+
+생성자가 받는 maxPassengersCount 인자는 탑승할 수 있는 최대 승객의 수입니다.
+
+어느 Vehicle을 초기화할 때든 maxPassengersCount가 100보다 큰 경우는 없다고 가정하셔도 좋습니다.
+
+2.2.1 Vehicle::AddPassenger() 메서드 구현하기
+Vehicle 개체에 Person을 추가합니다.
+
+Vehicle에 Person을 성공적으로 탑승시켰다면 true를 반환합니다. 추가된 Person의 라이프사이클(수명)은 Vehicle이 관리하지만, Vehicle이 소멸되거나 RemovePassenger() 같은 메서드를 호출하지 않는 한 여전히 클래스 밖에서도 Person을 가리키는 포인터를 사용할 수 있습니다. 단, 복사 생성자 호출이 불가피한 경우에는 그러지 아니합니다.
+
+만약 Vehicle에 Person을 추가하는 데 실패하면 false를 반환합니다.
+
+예시>
+
+Person* p = new Person("Bob", 85);
+Person* p2 = new Person("James", 75);
+Person* p3 = new Person("Tina", 50);
+
+Airplane* a = new Airplane(2);
+a->AddPassenger(p); // true
+a->AddPassenger(p2); // true
+a->AddPassenger(p3); // false
+
+delete a; // 이 코드는 p와 p2도 소멸시킵니다. p3는 소멸되지 않습니다.
+
+2.2.2 Vehicle::RemovePassenger() 메서드 구현하기
+색인에 있는 Person을 제거합니다.
+
+Person이 성공적으로 제거됐으면 true를, 아니라면 false를 반환합니다.
+
+예시>
+
+Person* p = new Person("Bob", 85);
+Person* p2 = new Person("James", 75);
+Person* p3 = new Person("Tina", 50);
+
+Airplane a(5);
+a.AddPassenger(p);
+a.AddPassenger(p2);
+a.AddPassenger(p3);
+
+a.RemovePassenger(1); // true. 더불어, Airplane 'a'에서 p2가 제거됨 
+
+a.RemovePassenger(4); // false
+a.RemovePassenger(2); // false
+2.2.3 Vehicle::GetPassenger() 메서드 구현하기
+색인에 있는 Person 포인터를 반환합니다.
+
+Person이 존재하지 않으면 NULL을 반환합니다.
+
+예시>
+
+Person* p = new Person("Bob", 85);
+Person* p2 = new Person("James", 75);
+Person* p3 = new Person("Tina", 50);
+
+Airplane a(5);
+a.AddPassenger(p);
+a.AddPassenger(p2);
+a.AddPassenger(p3);
+
+a.GetPassenger(1); // p2를 가리키는 포인터 반환
+a.GetPassenger(4); // NULL 반환
+
+2.2.4 Vehicle::GetPassengersCount() 메서드 구현하기
+실제 타고 있는 승객의 수를 반환합니다.
+Person* p = new Person("Bob", 85);
+Person* p2 = new Person("James", 75);
+Person* p3 = new Person("Tina", 50);
+
+Airplane a(5);
+a.AddPassenger(p);
+a.AddPassenger(p2);
+
+a.GetPassengersCount(); // 2 반환
+
+a.AddPassenger(p3);
+
+a.GetPassengersCount(); // 3 반환
+
+2.2.5 Vehicle::GetMaxPassengersCount() 메서드 구현하기
+탑승할 수 있는 최대 승객 수를 반환합니다.
+
+예시>
+
+Person* p = new Person("Bob", 85);
+Person* p2 = new Person("James", 75);
+Person* p3 = new Person("Tina", 50);
+
+Airplane a(10);
+a.AddPassenger(p);
+a.AddPassenger(p2);
+
+a.GetMaxPassengersCount(); // 10 반환
+
+a.AddPassenger(p3);
+
+a.GetMaxPassengersCount(); // 10 반환
+
+2.2.6 Vehicle::GetMaxSpeed() 메서드 구현하기
+순수 가상 함수로 Vehicle 클래스에서 구현할 수 없습니다(이 정도는 아셔야죠? ^_^). Vehicle의 모든 자식 클래스들이 이 메서드를 구현할 겁니다.
+
+운송 수단이 하늘, 물 속, 물 위, 도로 위 등 어디로 다니든 간에 최고 속도를 반환해야 합니다.
+
+예시>
+
+Person* p = new Person("Bob", 85);
+Person* p2 = new Person("James", 75);
+Person* p3 = new Person("Tina", 52);
+
+Airplane a(5);
+a.AddPassenger(p);
+a.AddPassenger(p2);
+a.AddPassenger(p3);
+
+a.GetMaxSpeed(); // 비행 속도가 도로 주행 속도보다 빠르기 때문에 648을 반환(섹션 2.4 참고)
+각 클래스의 속도 계산법에 대한 자세한 정보는 아래에서 확인하실 수 있습니다.
+
+2.3 Trailer 클래스
+Trailer 클래스는 캠핑카 트레일러로서 다른 차(본 과제에서는 Sedan)에 연결해야 이동이 가능합니다.
+2.3.1 Trailer::GetWeight() 메서드 구현하기
+GetWeight() 메서드는 트레일러의 무게를 반환합니다.
+
+예시>
+
+Trailer t(40);
+t.GetWeight(); // 40을 반환
+
+2.4 Airplane 클래스
+비행기는 하늘을 날 수도 있고 도로 위를 달릴 수도 있습니다.
+
+Airplane 클래스의 생성자의 인자는 maxPassengersCount 하나뿐입니다.
+
+Airplane의 비행 속도를 구하는 공식은 다음과 같습니다.
+
+200 * e^((-x + 800) / 500)
+여기서 e는 오일러의 수(Euler’s Number) 그리고 x는 타고 있는 승객들의 총 무게입니다.
+
+Airplane의 도로 주행 속도를 구하는 공식은 다음과 같습니다.
+4 * e^((-x + 400) / 70)
+여기서 e는 오일러의 수(Euler’s Number) 그리고 x는 타고 있는 승객들의 총 무게입니다.
+
+2.4.1 상속받은 가상 메서드들 구현하기
+비행기는 하늘로도, 땅으로도 이동할 수 있다는 걸 기억하세요. 올바른 인터페이스를 상속받아야 합니다. 그렇게 하면 Vehicle의 GetMaxSpeed() 메서드를 한결 수월하게 구현할 수 있을 겁니다.
+
+2.4.2 Airplane::operator+() 메서드 구현하기
+에라이, 어차피 공상 과학 영화에나 나오는 도시니 재밌는 것 좀 해봅시다. 비행기와 보트를 합체하면 수상비행기가 뿅~ 하고 등장합니다. Airplane과 Boat를 합하면 다음과 같은 일들이 일어납니다.
+
+승객들은 원래 타고 있던 각 운송 수단에서 수상비행기로 옮겨 탑니다. 단, Airplane의 승객들이 언제나 Boatplane에 먼저 옮겨 탑니다.
+
+최대 탑승객 수는 기존 두 운송 수단의 최대 탑승객 수를 합한 값입니다.
+
+예시>
+
+Person* p = new Person("Bob", 85);
+Person* p2 = new Person("James", 75);
+Person* p3 = new Person("Tina", 52);
+
+Person* p4 = new Person("Peter", 78);
+Person* p5 = new Person("Jane", 48);
+Person* p6 = new Person("Steve", 88);
+
+Airplane a(5);
+a.AddPassenger(p);
+a.AddPassenger(p2);
+a.AddPassenger(p3);
+
+Boat b(5);
+b.AddPassenger(p4);
+b.AddPassenger(p5);
+b.AddPassenger(p6);
+
+Boatplane bp = a + b; // Airplane + Boat
+bp.GetPassengersCount(); // 6을 반환
+bp.GetMaxPassengersCount(); // 10을 반환
+
+a.GetPassengersCount(); // 0을 반환
+b.GetPassengersCount(); // 0을 반환
+
+2.5 Boat 클래스
+Boat는 항해만 할 수 있습니다. 어떤 인터페이스를 상속받아야 할까요?
+
+Boat 클래스의 생성자의 인자는 maxPassengersCount 하나뿐입니다.
+
+Boat의 항해 속도를 구하는 공식은 다음과 같습니다.
+
+MAX((800 - 10x), 20)
+여기서 x는 타고 있는 승객들의 총 무게입니다.
+
+2.6 Boatplane 클래스
+Boatplane는 비행과 항해 모두 가능합니다. 올바른 인터페이스들을 상속받아야 하는 걸 기억하세요.
+
+Boatplane 클래스의 생성자의 인자는 maxPassengersCount 하나뿐입니다.
+
+Boatplane의 비행 속도를 구하는 공식은 다음과 같습니다.
+
+150 * e ^ ((-x + 500) / 300)
+여기서 e는 오일러의 수(Euler's Number) 그리고 x는 타고 있는 승객들의 총 무게입니다.
+
+Boatplane의 항해 속도를 구하는 공식은 다음과 같습니다.
+MAX((800 - 1.7x), 20)
+여기서 e는 오일러의 수(Euler's Number) 그리고 x는 타고 있는 승객들의 총 무게입니다.
+
+2.6.1 Boat::operator+() 메서드 구현하기
+이 함수는 인자가 Boat가 아니라 Airplane 개체라는 점만 빼면 Airplane::operator+()과 똑같습니다.
+
+예시>
+
+Person* p = new Person("Bob", 85);
+Person* p2 = new Person("James", 75);
+Person* p3 = new Person("Tina", 52);
+
+Person* p4 = new Person("Peter", 78);
+Person* p5 = new Person("Jane", 48);
+Person* p6 = new Person("Steve", 88);
+
+Airplane a(5);
+a.AddPassenger(p);
+a.AddPassenger(p2);
+a.AddPassenger(p3);
+
+Boat b(5);
+b.AddPassenger(p4);
+b.AddPassenger(p5);
+b.AddPassenger(p6);
+
+Boatplane bp = b + a; // Boat + Airplane인 것에 유의
+bp.GetPassengersCount(); // 6 반환
+bp.GetMaxPassengersCount(); // 10 반환
+
+a.GetPassengersCount(); // 0 반환
+b.GetPassengersCount(); // 0 반환
+
+2.7 Motorcycle 클래스
+Motorcycle은 오직 도로 주행만 할 수 있습니다. 올바른 인터페이스를 상속받아야 하는 걸 기억하세요.
+
+Motorcycle 클래스의 생성자는 아무런 인자도 받지 않습니다.
+
+Motorcycle에는 2명까지만 탑승할 수 있습니다.
+
+Motorcycle의 주행 속도를 구하는 공식은 다음과 같습니다.
+
+MAX((-(x/15)^3 + 2x + 400), 0)
+여기서 x는 타고 있는 사람의 총 무게입니다.
+
+2.8 Sedan 클래스
+Sedan은 도로 주행만 할 수 있습니다. 올바른 인터페이스를 상속받아야 하는 걸 기억하세요.
+
+Sedan 클래스의 생성자는 아무런 인자도 받지 않습니다.
+
+Sedan에는 최대 4명까지만 탑승할 수 있습니다.
+
+Sedan에는 트레일러를 연결할 수 있으며, 이는 주행 속도를 계산할 때 영향을 끼칩니다.
+
+Sedan의 주행 속도는 다음의 조건들에 따라 구합니다.
+
+If x <= 80, speed = 480 
+If x > 80, speed = 458
+If x > 160, speed = 400
+If x > 260, speed = 380
+If x > 350, speed = 300
+여기서 x는 타고 있는 승객들과 트레일러(연결돼 있을 경우)의 총 무게입니다.
+
+2.8.1 Sedan::AddTrailer() 메서드 구현하기
+Sedan에 Trailer를 성공적으로 연결했다면 true를 반환합니다. 연결된 Trailer의 라이프사이클(수명)은 Sedan이 관리하지만, Sedan이 소멸하거나 RemoveTrailer() 같은 메서드를 호출하지 않는 한 여전히 클래스 밖에서도 Trailer를 가리키는 포인터를 사용할 수 있습니다. 만약 Sedan에 이미 Trailer가 연결되어 있으면 false를 반환합니다.
+2.8.2 Sedan::RemoveTrailer() 메서드 구현하기
+Sedan에 연결된 Trailer를 분리합니다. Trailer를 성공적으로 분리하면 true를, 아니라면 false를 반환합니다.
+
+2.9 UBoat 클래스
+UBoat는 항해와 잠수 모두 할 수 있습니다. 올바른 인터페이스를 상속받아야 하는 걸 기억하세요.
+
+UBoat 클래스의 생성자는 아무런 인자도 받지 않습니다.
+
+UBoat에는 최대 50명까지만 탑승할 수 있습니다.
+
+부모 클래스/인터페이스의 가상 메서드들을 구현하세요.
+
+UBoat의 항해 속도를 구하는 공식은 다음과 같습니다.
+
+MAX((550 - x/10), 200)
+여기서 x는 타고 있는 승객들의 총 무게입니다.
+
+UBoat가 잠수했을 때의 속도를 구하는 공식은 다음과 같습니다.
+500 * log((x + 150)/150) + 30
+여기서 x는 타고 있는 승객들의 총 무게입니다.
+
+2.10 DeusExMachina 클래스
+DeusExMachina 클래스는 싱글턴입니다. (왜냐하면.. 신과 같은 기계는 단 한 대만 존재할 수 있으니까요!!!!!! ㅎㅎ)
+
+DeusExMachina가 동시에 관리할 수 있는 운송 수단은 최대 10개입니다.
+
+2.10.1 DeusExMachina::GetInstance() 메서드 구현하기
+GetInstance()는 이 클래스의 인스턴스가 존재하지 않을 경우 새 인스턴스를 만듭니다. 이미 존재한다면 기존의 인스턴스를 반환합니다.
+
+예시>
+
+DeusExMachina* deusExMachina1 = DeusExMachina::GetInstance();
+DeusExMachina* deusExMachina2 = DeusExMachina::GetInstance();
+
+bool bSame = deusExMachina1 == deusExMachina2; // true
+
+2.10.2 DeusExMachina::AddVehicle() 메서드 구현하기
+AddVehicle()은 DeusExMachina가 Vehicle을 성공적으로 맡으면 true를 반환합니다. 맡겨진 Vehicle의 라이프사이클(수명)은 DeusExMachina가 관리하지만, DeusExMachina가 소멸되거나 RemoveVehicle() 같은 메서드를 호출하지 않는 한 여전히 클래스 밖에서도 Vehicle을 가리키는 포인터를 사용할 수 있습니다. 만약 DeusExMachina가 Vehicle을 맡지 못했다면 false를 반환합니다.
+DeusExMachina* deusExMachina = DeusExMachina::GetInstance();
+
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+
+// 11번째 운송 수단
+deusExMachina->AddVehicle(new Airplane(5)); // false
+
+2.10.3 DeusExMachina::RemoveVehicle() 메서드 구현하기
+RemoveVehicle()은 색인에 있는 Vehicle을 제거합니다. 성공적으로 제거되면 true를, 아니라면 false를 반환합니다.
+DeusExMachina* deusExMachina = DeusExMachina::GetInstance();
+
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->AddVehicle(new Airplane(5)); // true
+deusExMachina->RemoveVehicle(0); // true
+deusExMachina->RemoveVehicle(3); // false
+
+2.10.4 DeusExMachina::Travel() 메서드 구현하기
+Travel() 메서드를 호출하면 DeusExMachina가 모든 운송 수단에게 이동하라는 명령을 내립니다. 이 메서드를 호출하면 모든 운송  하며, 그 1시간이 지나면 다시 Travel()이 호출될 때까지 움직이지 않습니다.
+
+운송 수단의 이동에는 다음과 같은 규칙이 있습니다.
+
+모든 운송 수단은 최고 속도로 이동합니다.
+
+Airplane은 한 번 이동한 후, 꼭 세 번을 쉽니다.
+
+Boat는 두 번 이동한 후, 꼭 한 번을 쉽니다.
+
+Boatplane은 한 번 이동한 후, 꼭 세 번을 쉽니다.
+
+Motorcycle은 다섯 번 이동한 후, 꼭 한 번을 쉽니다.
+
+트레일러가 달려 있지 않은 Sedan은 다섯 번 이동한 후, 꼭 한 번을 쉽니다. 트레일러가 달려 있다면, 다섯 번 이동한 후, 꼭 두 번을 쉽니다.
+
+UBoat는 두 번 이동한 후, 꼭 네 번을 쉽니다.
+
+예시>
+
+DeusExMachina* deusExMachina1 = DeusExMachina::GetInstance();
+
+deusExMachina1->AddVehicle(new Airplane(5));
+deusExMachina1->AddVehicle(new Boat(5));
+deusExMachina1->AddVehicle(new Boatplane(5));
+deusExMachina1->AddVehicle(new Motorcycle());
+deusExMachina1->AddVehicle(new Sedan());
+
+Sedan* sedan1 = new Sedan();
+sedan1->AddTrailer(new Trailer(50));
+
+deusExMachina1->AddVehicle(sedan1);
+deusExMachina1->AddVehicle(new UBoat());
+
+deusExMachina1->Travel(); // 모든 운송 수단이 이동
+deusExMachina1->Travel(); // Boat, Motorcycle, 두 Sedan, UBoat가 이동
+deusExMachina1->Travel(); // Motorcycle, 두 Sedan이 이동
+deusExMachina1->Travel(); // Boat, Motorcycle, 두 Sedan이 이동
+deusExMachina1->Travel(); // UBoat만 빼고 모두 이동
+deusExMachina1->Travel(); // 어떤 운송 수단도 움직이지 않음
+deusExMachina1->Travel(); // Boat, Motorcycle, 트레일러 안 달린 Sedan, UBoat가 이동
+deusExMachina1->Travel(); // Boat Motorcycle, 두 Sedan, UBoat가 이동
+deusExMachina1->Travel(); // Airplane, Boatplane, Motorcycle, 두 Sedan 이 이동
+deusExMachina1->Travel(); // Boat, Motorcycle, 두 Sedan이 이동
+deusExMachina1->Travel(); // Boat, Motorcycle, 두 Sedan이 이동
+deusExMachina1->Travel(); // 트레일러 달린 Sedan만 이동
+아래는 Travel()을 잇따라 호출했을 때 매번 어떤 운송 수단이 움직였는지 테이블로 나타낸 것입니다. 테이블에서 y는 움직였음을, n는 움직이지 않았음을 의미합니다.
+
+탈것/#Travel	1	2	3	4	5	6	7	8	9	10	11	12	13
+Airplane		y	n	n	n	y	n	n	n	y	n	n	n	y
+Boat		y	y	n	y	y	n	y	y	n	y	y	n	y
+Boatplane	y	n	n	n	y	n	n	n	y	n	n	n	y
+Motorcycle	y	y	y	y	y	n	y	y	y	y	y	n	y
+Sedan		y	y	y	y	y	n	y	y	y	y	y	n	y
+Sedan (+ 트레일러)	y	y	y	y	y	n	n	y	y	y	y	y	n
+UBoat		y	y	n	n	n	n	y	y	n	n	n	n	y
+
+2.10.5 DeusExMachina::GetFurthestTravelled() 메서드 구현하기
+GetFurthestTravelled() 지금까지 가장 멀리 이동한 운송 수단을 가리키는 포인터를 반환합니다.
+
+운송 수단이 하나도 없으면 NULL을 반환합니다.
+
+아직 움직인 운송 수단이 없으면 첫 번째 운송 수단을 반환합니다.
+
+DeusExMachina에 추가되는 순간 운송 수단의 위치는 0입니다.
+
+3. 본인 컴퓨터에서 테스트하는 법
+프로젝트에 main.cpp를 추가하고 뭐든 원하는 걸 테스트합니다. 예를 들면 아래와 같이 할 수 있습니다.
+#include <cassert>
+
+#include "Vehicle.h"
+#include "Airplane.h"
+#include "Boat.h"
+#include "Boatplane.h"
+#include "Motorcycle.h"
+#include "Sedan.h"
+#include "Trailer.h"
+#include "UBoat.h"
+#include "DeusExMachina.h"
+#include "Person.h"
+
+using namespace assignment2;
+
+int main()
+{
+	Person* p = new Person("Bob", 85);
+
+	assert(p->GetName() == std::string("Bob"));
+	assert(p->GetWeight() == 85);
+
+	Person* p2 = new Person("James", 75);
+	Person* p3 = new Person("Tina", 52);
+
+	Person* p4 = new Person("Peter", 78);
+	Person* p5 = new Person("Jane", 48);
+	Person* p6 = new Person("Steve", 88);
+
+	Airplane a(5);
+	a.AddPassenger(p);
+	a.AddPassenger(p2);
+	a.AddPassenger(p3);
+
+	assert(a.GetMaxPassengersCount() == 5);
+	assert(a.GetPassengersCount() == 3);
+	assert(a.GetPassenger(1) == p2);
+	assert(a.GetFlySpeed() == 648);
+	assert(a.GetDriveSpeed() == 59);
+	assert(a.GetMaxSpeed() == 648);
+
+	Boat b(5);
+	b.AddPassenger(p4);
+	b.AddPassenger(p5);
+	b.AddPassenger(p6);
+
+	Boatplane bp = a + b;
+
+	assert(bp.GetPassengersCount() == 6);
+	assert(bp.GetMaxPassengersCount() == 10);
+
+	assert(a.GetPassengersCount() == 0);
+	assert(b.GetPassengersCount() == 0);
+
+	DeusExMachina* deusExMachina1 = DeusExMachina::GetInstance();
+	DeusExMachina* deusExMachina2 = DeusExMachina::GetInstance();
+
+	bool bSame = deusExMachina1 == deusExMachina2;
+	assert(bSame);
+
+	Airplane* airplane = new Airplane(5);
+	Boat* boat = new Boat(5);
+	Boatplane* boatplane = new Boatplane(5);
+	Motorcycle* motorcycle = new Motorcycle();
+	Sedan* sedan = new Sedan();
+	Sedan* sedan2 = new Sedan();
+	UBoat* uboat = new UBoat();
+
+	bool bAdded = sedan2->AddTrailer(new Trailer(50));
+	assert(bAdded);
+
+	bAdded = sedan2->AddTrailer(new Trailer(60));
+	assert(!bAdded);
+
+	bAdded = deusExMachina1->AddVehicle(airplane);
+	assert(bAdded);
+
+	deusExMachina1->AddVehicle(boat);
+	deusExMachina1->AddVehicle(boatplane);
+	deusExMachina1->AddVehicle(motorcycle);
+	deusExMachina1->AddVehicle(sedan);
+	deusExMachina1->AddVehicle(sedan2);
+	deusExMachina1->AddVehicle(uboat);
+	deusExMachina1->AddVehicle(new Airplane(5));
+	deusExMachina1->AddVehicle(new Airplane(5));
+	deusExMachina1->AddVehicle(new Airplane(5));
+
+	bAdded = deusExMachina1->AddVehicle(new Airplane(5));
+
+	assert(!bAdded);
+
+	deusExMachina1->RemoveVehicle(9);
+	deusExMachina1->RemoveVehicle(8);
+	bool bRemoved = deusExMachina1->RemoveVehicle(7);
+	assert(bRemoved);
+
+	bRemoved = deusExMachina1->RemoveVehicle(9);
+	assert(!bRemoved);
+
+	deusExMachina1->Travel(); // 모든 운송 수단이 이동
+	deusExMachina1->Travel(); // Boat, Motorcycle, 두 Sedan, UBoat가 이동
+	deusExMachina1->Travel(); // Motorcycle, 두 Sedan이 이동
+	deusExMachina1->Travel(); // Boat, Motorcycle, 두 Sedan이 이동
+	deusExMachina1->Travel(); // UBoat만 빼고 전부 이동
+	deusExMachina1->Travel(); // 어떤 운송 수단도 움직이지 않음
+	deusExMachina1->Travel(); // Boat, Motorcycle, 트레일러 안 달린 Sedan, UBoat가 이동
+	deusExMachina1->Travel(); // Boat, Motorcycle, 두 Sedan, UBoat가 이동
+	deusExMachina1->Travel(); // Airplane, Boatplane, Motorcycle, 두 Sedan이 이동
+	deusExMachina1->Travel(); // Boat, Motorcycle, 두 Sedan이 이동
+	deusExMachina1->Travel(); // Boat, Motorcycle, 두 Sedan이 이동
+	deusExMachina1->Travel(); // 트레일러 달린 Sedan만 이동
+
+	assert(deusExMachina1->GetFurthestTravelled() == boat);
+
+	return 0;
+}
+결과를 보기 위해 컴파일하고 실행합니다.
+
+위 코드에는 몇 가지 시나리오만 있을 뿐 모든 걸 테스트하는 게 아니라는 것을 유념하세요. 언제나처럼, 과제를 제출하기 전에 책임감을 갖고 자기 코드를 면밀히 테스트해야 합니다.
+
+4. 커밋, 푸쉬 그리고 빌드 요청
+이건 어떻게 하는 지 이제 다 아시죠? :)
+

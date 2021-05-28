@@ -1,0 +1,557 @@
+COMP3200 - 과제 3
+본 실습은 컴퓨터에서 해야 하는 실습입니다. 코드 작성이 끝났다면 깃 저장소에 커밋 및 푸쉬를 하고 슬랙을 통해 자동으로 채점을 받으세요.
+
+큐와 스택은 업계에서 자주 쓰이는 유용한 자료 구조입니다. 그 중 큐는 선입선출(FIFO, First In First Out) 자료 구조로, 가장 먼저 추가한 요소를 가장 먼저 제거합니다. 반면에 스택은 후입선출(LIFO, Last In First Out) 자료 구조로, 가장 나중에 추가한 요소를 가장 먼저 제거합니다.
+
+C++에서의 큐와 스택에는 한 가지 단점이 있는데, 바로 요소들을 순회(자료 구조의 변경없이 그 안에 저장된 모든 요소들에 순차적으로 접근하는 행위)할 수 없다는 점입니다(그럴 수 있다면 큐나 스택이 아니겠죠!). 그래서 최댓값, 최솟값, 평균, 분산 등의 유용한 통계 수치들을 구하기 어렵습니다. 이 문제를 해결하기 위해 새로운 스택과 큐(SmartStack과 SmartQueue)를 만들어 볼까요?
+
+std::queue와 std::stack을 이용하여 SmartStack, SmartQueue, QueueStack 총 세 개의 자료 구조를 구현해 주세요.
+
+1. 프로젝트 준비하기
+본 과제에서는 난이도를 살짝 높여 보겠습니다. 기본 파일을 한 개도 안 드릴 겁니다. 그러니 아래에 나와 있는 스펙을 보고 알아서 만들어 보세요. 와아~~~ 무진장 재밌겠죠?
+
+비주얼 스튜디오에서 Assignment3.sln을 엽니다.
+일어나서 국민 체조 한 번 하시고, 헤더 파일들을 생성할 준비하세요 :)
+2. SmartStack, SmartQueue, QueueStack 구현하기
+
+보편적 규칙
+SmartStack, SmartQueue, QueueStack과 함께 쓰는 자료형은 오직 숫자형(예> int, unsigned int, double, short 등)뿐이라고 가정합니다.
+
+계산할 때는 항상 double을 사용하세요.
+STL 컨테이너는 std::stack과 std::queue만 이용할 수 있습니다. std::vector나 std::map을 쓰면 0점 뜨니까 헛수고하지 마세요.
+배열도 사용할 수 없습니다. 거듭 강조하지만, std::stack과 std::queue만 이용할 수 있습니다.
+혹시 스택과 큐가 뭔지 잘 모르겠다면 본 과제를 구현하기 전에 다시 복습하길 권합니다.
+정수나 기타 자료형의 오버플로우에 대해서는 신경쓸 필요 없습니다. 엄청 큰 숫자로는 과제를 테스트하지 않을 거니까요.
+
+2.1. SmartStack 클래스 구현하기
+2.1.1. 생성자 구현하기
+SmartStack의 생성자에는 매개 변수가 없습니다.
+필요한 경우 복사 생성자, 소멸자, 대입 연산자를 구현해 주세요.
+예시>
+SmartStack<int> s;
+SmartStack<int>* sPtr = new SmartStack<int>();
+
+2.1.2. Push() 구현하기
+Push()의 인자는 템플릿형 T인 number 하나뿐입니다.
+Push()는 number를 스택에 집어넣습니다.
+만점을 받으려면 이 메서드의 시간 복잡도가 O(1)이어야 합니다.
+Push()는 아무것도 반환하지 않습니다.
+예시>
+
+SmartStack<int> s;
+s.Push(6); // [ 6 ]
+s.Push(5); // [ 6, 5 ]
+s.Push(-2); // [ 6, 5, -2 ]
+
+2.1.3. Pop() 구현하기
+Pop()에는 매개 변수가 없습니다.
+Pop()은 스택에서 제일 위에 있는 숫자를 제거 및 반환합니다.
+빌드봇은 스택이 비어 있지 않을 때만 이 메서드를 테스트합니다.
+만점을 받으려면 이 메서드의 시간 복잡도가 O(1)이어야 합니다.
+예시>
+SmartStack<int> s;
+s.Push(6);
+s.Push(5);
+s.Push(-2); // [ 6, 5, -2 ]
+int popped = s.Pop(); // popped의 값은 -2. s의 요소: [ 6, 5 ]
+
+2.1.4. Peek() 구현하기
+Peek()에는 매개 변수가 없습니다.
+Peek()은 스택에서 제일 위에 있는 숫자를 반환합니다.
+이 메서드는 반환하는 숫자를 스택에서 제거하지 않습니다.
+빌드봇은 스택이 비어 있지 않을 때만 이 메서드를 테스트합니다.
+예시>
+SmartStack<int> s;
+s.Push(6);
+s.Push(5);
+s.Push(-2); // [ 6, 5, -2 ]
+
+int x = s.Peek(); // -2를 반환. 그러나 스택의 요소는 여전히 [ 6, 5, -2 ]
+
+2.1.5. GetMax() 구현하기
+GetMax()에는 매개 변수가 없습니다.
+GetMax()는 스택에 있는 숫자들 중 가장 큰 숫자를 반환합니다.
+스택이 비어 있으면 템플릿형 T가 표현할 수 있는 가장 작은 수를 반환합니다. (힌트: #include <limits>)
+만점을 받으려면 이 메서드의 시간 복잡도가 O(1)이어야 합니다.
+예시>
+SmartStack<int> s;
+s.Push(6);
+s.Push(5);
+s.Push(-2); // [ 6, 5, -2 ]
+
+int max = s.GetMax(); // 6
+
+2.1.6. GetMin() 구현하기
+GetMin()에는 매개 변수가 없습니다.
+GetMin()은 스택에 있는 숫자들 중 가장 작은 숫자를 반환합니다.
+스택이 비어 있으면 템플릿형 T가 표현할 수 있는 가장 큰 수를 반환합니다.
+만점을 받으려면 이 메서드의 시간 복잡도가 O(1)이어야 합니다.
+예시>
+SmartStack<int> s;
+s.Push(6);
+s.Push(5);
+s.Push(-2); // [ 6, 5, -2 ]
+
+int min = s.GetMin(); // -2
+
+2.1.7. GetAverage() 구현하기
+GetAverage()에는 매개 변수가 없습니다.
+GetAverage()는 스택에 있는 수들의 평균을 반환합니다.
+GetAverage()의 반환형은 double이며, 반환 값은 소수 넷째 자리에서 반올림해야 합니다.
+빌드봇은 스택이 비어 있지 않을 때만 이 메서드를 테스트합니다.
+예시>
+SmartStack<int> s;
+s.Push(6);
+s.Push(5);
+s.Push(-2); // [ 6, 5, -2 ]
+double average = s.GetAverage(); // 3.000
+
+2.1.8. GetSum() 구현하기
+GetSum()에는 매개 변수가 없습니다.
+GetSum()은 스택에 있는 수들의 합을 반환합니다.
+GetSum()의 반환형은 템플릿형 T입니다.
+예시>
+SmartStack<int> s;
+s.Push(6);
+s.Push(5);
+s.Push(-2); // [ 6, 5, -2 ]
+
+int sum = s.GetSum();
+
+2.1.9. GetVariance() 구현하기
+GetVariance()에는 매개 변수가 없습니다.
+GetVariance()는 스택에 있는 수들의 분산을 반환합니다. 다음의 링크를 참고하세요. https://www.sciencebuddies.org/science-fair-projects/science-fair/variance-and-standard-deviation
+GetVariance()의 반환형은 double이며, 반환 값은 소수 넷째 자리에서 반올림해야 합니다.
+빌드봇은 스택이 비어 있지 않을 때만 이 메서드를 테스트합니다.
+만점을 받으려면 이 메서드의 시간 복잡도는 O(1)이어야 합니다.
+예시>
+SmartStack<int> s;
+s.Push(6);
+s.Push(5);
+s.Push(-2); // [ 6, 5, -2 ]
+
+double variance = s.GetVariance(); // 12.667
+
+2.1.10. GetStandardDeviation() 구현하기
+GetStandardDeviation()에는 매개 변수가 없습니다.
+GetStandardDeviation()은 스택에 있는 수들의 표준 편차를 반환합니다. 표준 편차는 분산의 제곱근입니다.
+GetStandardDeviation()의 반환형은 double이며, 반환 값은 소수 넷째 자리에서 반올림해야 합니다.
+빌드봇은 스택이 비어 있지 않을 때만 이 메서드를 테스트합니다.
+예시>
+SmartStack<int> s;
+s.Push(6);
+s.Push(5);
+s.Push(-2); // [ 6, 5, -2 ]
+
+double standardDeviation = s.GetStandardDeviation(); // 3.559
+
+2.1.11. GetCount() 구현하기
+GetCount()에는 매개 변수가 없습니다.
+GetCount()는 스택에 있는 요소들의 총개수를 반환합니다.
+GetCount()의 반환형은 unsigned int입니다.
+예시>
+SmartStack<int> s;
+s.Push(6);
+s.Push(5);
+s.Push(-2); // [ 6, 5, -2 ]
+
+unsigned int count = s.GetCount(); // 3
+
+
+2.2 SmartQueue 클래스 구현하기
+2.2.1. 생성자 구현하기
+SmartQueue의 생성자에는 매개 변수가 없습니다.
+필요한 경우 복사 생성자, 소멸자, 대입 연산자를 구현해 주세요.
+예시>
+SmartQueue<int> q;
+SmartQueue<int>* qPtr = new SmartQueue<int>();
+
+2.2.2. Enqueue() 구현하기
+Enqueue()의 인자는 템플릿형 T인 number 하나뿐입니다.
+Enqueue()는 number를 큐에 추가합니다.
+Enqueue()는 아무것도 반환하지 않습니다.
+예시>
+SmartQueue<int> q;
+q.Enqueue(6); // [ 6 ]
+q.Enqueue(5); // [ 6, 5 ]
+q.Enqueue(-2); // [ 6, 5, -2 ]
+
+2.2.3. Peek() 구현하기
+Peek()에는 매개 변수가 없습니다.
+Peek()은 큐에서 가장 앞에 있는 숫자를 반환합니다.
+이 메서드는 반환하는 숫자를 큐에서 제거하지 않습니다.
+빌드봇은 큐가 비어 있지 않을 때만 이 메서드를 테스트합니다.
+예시>
+SmartQueue<int> q;
+q.Enqueue(6);
+q.Enqueue(5);
+q.Enqueue(-2); // [ 6, 5, -2 ]
+
+int x = s.Peek(); // 6을 반환. 그러나 큐의 요소는 여전히 [ 6, 5, -2 ]
+
+2.2.4. Dequeue() 구현하기
+Dequeue()에는 매개 변수가 없습니다.
+Dequeue()는 큐에서 가장 앞에 있는 숫자를 제거 및 반환합니다.
+빌드봇은 큐가 비어 있지 않을 때만 이 메서드를 테스트합니다.
+
+예시>
+SmartQueue<int> q;
+q.Enqueue(6);
+q.Enqueue(5);
+q.Enqueue(-2); // [ 6, 5, -2 ]
+
+int dequeued = s.Dequeue(); // dequeued의 값은 6, q의 요소: [ 5, -2 ]
+
+2.2.5. GetMax() 구현하기
+GetMax()에는 매개 변수가 없습니다.
+GetMax()는 큐에 있는 숫자들 중 가장 큰 숫자를 반환합니다.
+큐가 비어 있으면 템플릿형 T가 표현할 수 있는 가장 작은 수를 반환합니다.
+예시>
+SmartQueue<int> q;
+q.Enqueue(6);
+q.Enqueue(5);
+q.Enqueue(-2); // [ 6, 5, -2 ]
+
+int max = q.GetMax(); // 6
+
+2.2.6. GetMin() 구현하기
+GetMin()에는 매개 변수가 없습니다.
+GetMin()은 큐에 있는 숫자들 중 가장 작은 숫자를 반환합니다.
+큐가 비어 있으면 템플릿형 T가 표현할 수 있는 가장 큰 수를 반환합니다.
+예시>
+SmartQueue<int> q;
+q.Enqueue(6);
+q.Enqueue(5);
+q.Enqueue(-2); // [ 6, 5, -2 ]
+
+int min = q.GetMin(); // -2
+
+2.2.7. GetAverage() 구현하기
+GetAverage()에는 매개 변수가 없습니다.
+GetAverage()는 큐에 있는 수들의 평균을 반환합니다.
+GetAverage()의 반환형은 double이며, 반환 값은 소수 넷째 자리에서 반올림해야 합니다.
+빌드봇은 큐가 비어 있지 않을 때만 이 메서드를 테스트합니다.
+예시>
+SmartQueue<int> q;
+q.Enqueue(6);
+q.Enqueue(5);
+q.Enqueue(-2); // [ 6, 5, -2 ]
+
+double average = q.GetAverage(); // 3.000
+
+2.2.8. GetSum() 구현하기
+GetSum()에는 매개 변수가 없습니다.
+GetSum()은 큐에 있는 수들의 합을 반환합니다.
+GetSum()의 반환형은 템플릿형 T입니다.
+예시>
+SmartQueue<int> q;
+q.Enqueue(6);
+q.Enqueue(5);
+q.Enqueue(-2); // [ 6, 5, -2 ]
+
+int sum = q.GetSum(); // 9
+
+2.2.9. GetVariance() 구현하기
+GetVariance()에는 매개 변수가 없습니다.
+GetVariance()는 큐에 있는 수들의 분산을 반환합니다. 다음의 링크를 참고하세요. https://www.sciencebuddies.org/science-fair-projects/science-fair/variance-and-standard-deviation.
+GetVariance()의 반환형은 double이며, 반환 값은 소수 넷째 자리에서 반올림해야 합니다.
+빌드봇은 큐가 비어 있지 않을 때만 이 메서드를 테스트합니다.
+만점을 받으려면 이 메서드의 시간 복잡도가 O(1)이어야 합니다.
+예시>
+SmartQueue<int> q;
+q.Enqueue(6);
+q.Enqueue(5);
+q.Enqueue(-2); // [ 6, 5, -2 ]
+
+double variance = q.GetVariance(); // 12.667
+
+2.2.10. GetStandardDeviation() 구현하기
+GetStandardDeviation()에는 매개 변수가 없습니다.
+GetStandardDeviation()은 큐에 있는 수들의 표준 편차를 반환합니다. 표준 편차는 분산의 제곱근입니다.
+GetStandardDeviation()의 반환형은 double이며, 반환 값은 소수 넷째 자리에서 반올림해야 합니다.
+빌드봇은 큐가 비어 있지 않을 때만 이 메서드를 테스트합니다.
+예시>
+SmartQueue<int> q;
+q.Enqueue(6);
+q.Enqueue(5);
+q.Enqueue(-2); // [ 6, 5, -2 ]
+
+double standardDeviation = q.GetStandardDeviation(); // 3.559
+
+2.2.11. GetCount() 구현하기
+GetCount()에는 매개 변수가 없습니다.
+GetCount()는 큐에 있는 요소들의 총개수를 반환합니다.
+GetCount()의 반환형은 unsigned int입니다.
+예시>
+SmartQueue<int> q;
+q.Enqueue(6);
+q.Enqueue(5);
+q.Enqueue(-2); // [ 6, 5, -2 ]
+
+unsigned int count = q.GetCount(); // 3
+
+
+2.3. QueueStack 클래스 구현하기
+QueueStack 클래스는 "큐 속에 스택이 들어 있는 구조"입니다. 이해를 돕기 위해 접시를 쌓는 것을 한번 생각해 봅시다. 접시더미마다 접시를 쌓을 수 있는 한계가 있습니다. 너무 높게 쌓으면 넘어지기 쉬우니까요. 따라서 스택의 높이가 어느 정도 이상이 되면 옆에 새 스택(접시더미)을 만들어야 합니다.
+
+2.3.1. 생성자 구현하기
+생성자의 인자는 unsigned integer형 maxStackSize 하나뿐이고, 이는 큐 속에 있는 스택의 최대 크기(높이)입니다. 달리 말하면 각 스택의 요소 개수가 maxStackSize를 초과할 수 없습니다.
+필요한 경우 복사 생성자, 소멸자, 대입 연산자를 구현해 주세요.
+예시>
+QueueStack<int> qs(5);
+QueueStack<int>* qsPtr = new QueueStack<int>(5);
+
+2.3.2. Enqueue() 구현하기
+Enqueue()의 인자는 템플릿형 T인 number 하나뿐입니다.
+이번에는 추가되는 숫자가 큐 속의 스택 중 하나로 들어갑니다. 그러니 이 함수가 어떻게 동작할지 유심히 생각해 보세요.
+Enqueue()는 아무것도 반환하지 않습니다.
+예시>
+QueueStack<int> qs(3);
+qs.Enqueue(1); // [ [ 1 ] ]
+qs.Enqueue(2); // [ [ 1, 2 ] ]
+qs.Enqueue(3); // [ [ 1, 2, 3 ] ]
+qs.Enqueue(4); // [ [ 1, 2, 3 ], [ 4 ] ]
+qs.Enqueue(5); // [ [ 1, 2, 3 ], [ 4, 5 ] ]
+
+2.3.3. Peek() 구현하기
+Peek()에는 매개 변수가 없습니다.
+Peek()은 큐 "가장 앞에 있는 스택에서 제일 위에 있는 숫자"를 반환합니다.
+이 메서드는 반환하는 숫자를 스택에서 제거하지 않습니다.
+빌드봇은 큐-스택이 비어 있지 않을 때만 이 메서드를 테스트합니다.
+예시>
+QueueStack<int> qs(3);
+qs.Enqueue(1); // [ [ 1 ] ]
+qs.Enqueue(2); // [ [ 1, 2 ] ]
+qs.Enqueue(3); // [ [ 1, 2, 3 ] ]
+qs.Enqueue(4); // [ [ 1, 2, 3 ], [ 4 ] ]
+qs.Enqueue(5); // [ [ 1, 2, 3 ], [ 4, 5 ] ]
+
+int peeked = qs.Peek(); // peeked의 값은 3. qs의 요소는 여전히 [ [ 1, 2, 3 ], [ 4, 5 ] ]
+
+2.3.4. Dequeue() 구현하기
+Dequeue()에는 매개 변수가 없습니다.
+Dequeue()는 큐 가장 앞에 있는 스택에서 제일 위에 있는 숫자를 제거 및 반환합니다.
+빌드봇은 큐-스택이 비어 있지 않을 때만 이 메서드를 테스트합니다.
+예시>
+QueueStack<int> qs(3);
+qs.Enqueue(1); // [ [ 1 ] ]
+qs.Enqueue(2); // [ [ 1, 2 ] ]
+qs.Enqueue(3); // [ [ 1, 2, 3 ] ]
+qs.Enqueue(4); // [ [ 1, 2, 3 ], [ 4 ] ]
+qs.Enqueue(5); // [ [ 1, 2, 3 ], [ 4, 5 ] ]
+
+int dequeued = qs.Dequeue(); // dequeued의 값은 3. qs의 요소: [ [ 1, 2 ], [ 4, 5 ] ]
+
+2.3.5. GetMax() 구현하기
+GetMax()에는 매개 변수가 없습니다.
+GetMax()는 큐-스택에 있는 숫자들 중 가장 큰 숫자를 반환합니다.
+큐-스택이 비어 있으면 템플릿형 T가 표현할 수 있는 가장 작은 수를 반환합니다.
+예시>
+QueueStack<int> qs(3);
+qs.Enqueue(1); // [ [ 1 ] ]
+qs.Enqueue(2); // [ [ 1, 2 ] ]
+qs.Enqueue(3); // [ [ 1, 2, 3 ] ]
+qs.Enqueue(4); // [ [ 1, 2, 3 ], [ 4 ] ]
+qs.Enqueue(5); // [ [ 1, 2, 3 ], [ 4, 5 ] ]
+
+int max = qs.GetMax(); // 5
+
+2.3.6. GetMin() 구현하기
+GetMin()에는 매개 변수가 없습니다.
+GetMin()은 큐-스택에 있는 숫자들 중 가장 작은 숫자를 반환합니다.
+큐-스택이 비어 있으면 템플릿형 T가 표현할 수 있는 가장 큰 수를 반환합니다.
+예시>
+QueueStack<int> qs(3);
+qs.Enqueue(1); // [ [ 1 ] ]
+qs.Enqueue(2); // [ [ 1, 2 ] ]
+qs.Enqueue(3); // [ [ 1, 2, 3 ] ]
+qs.Enqueue(4); // [ [ 1, 2, 3 ], [ 4 ] ]
+qs.Enqueue(5); // [ [ 1, 2, 3 ], [ 4, 5 ] ]
+
+int min = qs.GetMin(); // 1
+
+2.3.7. GetAverage() 구현하기
+GetAverage()에는 매개 변수가 없습니다.
+GetAverage()는 큐-스택 안에 있는 수들의 평균을 반환합니다.
+GetAverage()의 반환형은 double이며, 반환 값은 소수 넷째 자리에서 반올림해야 합니다.
+빌드봇은 큐-스택이 비어 있지 않을 때만 이 메서드를 테스트합니다.
+예시>
+QueueStack<int> qs(3);
+qs.Enqueue(1); // [ [ 1 ] ]
+qs.Enqueue(2); // [ [ 1, 2 ] ]
+qs.Enqueue(3); // [ [ 1, 2, 3 ] ]
+qs.Enqueue(4); // [ [ 1, 2, 3 ], [ 4 ] ]
+qs.Enqueue(5); // [ [ 1, 2, 3 ], [ 4, 5 ] ]
+
+double average = qs.GetAverage(); // 3.000
+
+2.3.8. GetSum() 구현하기
+GetSum()에는 매개 변수가 없습니다.
+GetSum()은 큐-스택 안에 있는 모든 수들의 합을 반환합니다.
+GetSum()의 반환형은 템플릿형 T 입니다.
+예시>
+QueueStack<int> qs(3);
+qs.Enqueue(1); // [ [ 1 ] ]
+qs.Enqueue(2); // [ [ 1, 2 ] ]
+qs.Enqueue(3); // [ [ 1, 2, 3 ] ]
+qs.Enqueue(4); // [ [ 1, 2, 3 ], [ 4 ] ]
+qs.Enqueue(5); // [ [ 1, 2, 3 ], [ 4, 5 ] ]
+
+int sum = qs.GetSum(); // 15
+
+2.3.9. GetCount() 구현하기
+GetCount()에는 매개 변수가 없습니다.
+GetCount()는 큐-스택 안에 있는 요소들의 총개수를 반환합니다.
+GetCount()의 반환형은 unsigned int입니다.
+예시>
+QueueStack<int> qs(3);
+qs.Enqueue(1); // [ [ 1 ] ]
+qs.Enqueue(2); // [ [ 1, 2 ] ]
+qs.Enqueue(3); // [ [ 1, 2, 3 ] ]
+qs.Enqueue(4); // [ [ 1, 2, 3 ], [ 4 ] ]
+qs.Enqueue(5); // [ [ 1, 2, 3 ], [ 4, 5 ] ]
+
+unsigned int count = qs.GetCount(); // 5
+
+2.3.10. GetStackCount() 구현하기
+GetStackCount()에는 매개 변수가 없습니다.
+GetStackCount()는 큐-스택 안에 있는 스택의 총개수를 반환합니다.
+GetStackCount()의 반환형은 unsigned int입니다.
+예시>
+QueueStack<int> qs(3);
+qs.Enqueue(1); // [ [ 1 ] ]
+qs.Enqueue(2); // [ [ 1, 2 ] ]
+qs.Enqueue(3); // [ [ 1, 2, 3 ] ]
+qs.Enqueue(4); // [ [ 1, 2, 3 ], [ 4 ] ]
+qs.Enqueue(5); // [ [ 1, 2, 3 ], [ 4, 5 ] ]
+
+unsigned int stackCount = qs.GetStackCount(); // 2
+
+3. 본인 컴퓨터에서 테스트하는 법
+프로젝트에 main.cpp를 추가하고, 그 안에 테스트 코드를 작성하세요. 아래는 테스트 코드의 한 예입니다. 자기 코드를 테스트하는 법도 연습해야 하니까 SmartStack을 테스트하는 코드 샘플만 드리겠습니다.
+#include <cassert>
+
+#include "SmartStack.h"
+#include "SmartQueue.h"
+#include "QueueStack.h"
+
+using namespace assignment3;
+
+int main() 
+{
+	SmartStack<float> ss;
+
+	ss.Push(3.4999f);
+	ss.Push(1.2f);
+	ss.Push(4.6555f);
+	ss.Push(3.3299f);
+	ss.Push(10.2f);
+	ss.Push(1.1f);
+	ss.Push(-5.9f);
+	ss.Push(1.1f);
+	ss.Push(-12.4f);
+	ss.Push(9.2f);
+
+	assert(ss.GetCount() == 10U);
+	assert(ss.Peek() == 9.2f);
+	assert(ss.GetMax() == 10.2f);
+	assert(ss.GetMin() == -12.4f);
+	assert(ss.GetSum() == 15.985301f);
+	assert(ss.GetAverage() == 1.599);
+	assert(ss.GetVariance() == 40.057);
+	assert(ss.GetStandardDeviation() == 6.329);
+	assert(ss.Peek() == 9.2f);
+
+	float popped1 = ss.Pop();
+	float popped2 = ss.Pop();
+
+	assert(popped1 == 9.2f);
+	assert(popped2 == -12.4f);
+	assert(ss.GetCount() == 8U);
+	assert(ss.Peek() == 1.1f);
+	assert(ss.GetMax() == 10.2f);
+	assert(ss.GetMin() == -5.9f);
+	assert(ss.GetSum() == 19.1853008f);
+	assert(ss.GetAverage() == 2.398);
+	assert(ss.GetVariance() == 17.714);
+	assert(ss.GetStandardDeviation() == 4.209);
+
+	SmartQueue<float> sq;
+
+	sq.Enqueue(3.4999f);
+	sq.Enqueue(1.2f);
+	sq.Enqueue(4.6555f);
+	sq.Enqueue(3.3299f);
+	sq.Enqueue(10.2f);
+	sq.Enqueue(1.1f);
+	sq.Enqueue(-5.9f);
+	sq.Enqueue(1.1f);
+	sq.Enqueue(-12.4f);
+	sq.Enqueue(9.2f);
+
+	assert(sq.GetCount() == 10U);
+	assert(sq.Peek() == 3.4999f);
+	assert(sq.GetMax() == 10.2f);
+	assert(sq.GetMin() == -12.4f);
+	assert(sq.GetSum() == 15.9853010f);
+	assert(sq.GetAverage() == 1.599);
+	assert(sq.GetVariance() == 40.057);
+	assert(sq.GetStandardDeviation() == 6.329);
+	assert(sq.Peek() == 3.4999f);
+
+	float dequeued1 = sq.Dequeue();
+	float dequeued2 = sq.Dequeue();
+
+	assert(dequeued1 == 3.4999f);
+	assert(dequeued2 == 1.2f);
+	assert(sq.GetCount() == 8U);
+	assert(sq.Peek() == 4.6555f);
+	assert(sq.GetMax() == 10.2f);
+	assert(sq.GetMin() == -12.4f);
+	assert(sq.GetSum() == 11.2854013f);
+	assert(sq.GetAverage() == 1.411);
+	assert(sq.GetVariance() == 49.564);
+	assert(sq.GetStandardDeviation() == 7.040);
+
+	QueueStack<float> qs(3);
+
+	qs.Enqueue(3.4f);
+	qs.Enqueue(1.2f);
+	qs.Enqueue(4.6f);
+	qs.Enqueue(3.32f);
+	qs.Enqueue(10.2f);
+	qs.Enqueue(1.1f);
+	qs.Enqueue(-5.9f);
+	qs.Enqueue(1.1f);
+	qs.Enqueue(-12.4f);
+	qs.Enqueue(9.2f);
+
+	assert(qs.GetStackCount() == 4U);
+	assert(qs.Peek() == 4.6f);
+	assert(qs.GetCount() == 10U);
+	assert(qs.GetMax() == 10.2f);
+	assert(qs.GetMin() == -12.4f);
+	assert(qs.GetSum() == 15.8200026f);
+	assert(qs.GetAverage() == 1.582);
+	assert(qs.GetStackCount() == 4U);
+	assert(qs.Peek() == 4.6f);
+
+	float dequeued3 = qs.Dequeue();
+	float dequeued4 = qs.Dequeue();
+	float dequeued5 = qs.Dequeue();
+
+	assert(dequeued3 == 4.6f);
+	assert(dequeued4 == 1.2f);
+	assert(dequeued5 == 3.4f);
+	assert(qs.GetCount() == 7U);
+	assert(qs.GetStackCount() == 3U);
+	assert(qs.GetMax() == 10.2f);
+	assert(qs.GetMin() == -12.4f);
+	assert(qs.GetSum() == 6.62000322f);
+	assert(qs.GetAverage() == 0.946);
+
+	return 0;
+}
+결과를 보기 위해 컴파일하고 실행합니다.
+4. 커밋, 푸쉬 그리고 빌드 요청
+이건 어떻게 하는 지 이제 다 아시죠? :)
